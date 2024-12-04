@@ -8,12 +8,14 @@ interface ResumePreviewSectionProps {
   resumeData: ResumeValues;
   setResumeData: (data: ResumeValues) => void;
   className?: string;
+  currentStep?: string;
 }
 
 export default function ResumePreviewSection({
   resumeData,
   setResumeData,
   className,
+  currentStep,
 }: ResumePreviewSectionProps) {
   return (
     <div
@@ -36,6 +38,7 @@ export default function ResumePreviewSection({
       <div className="flex w-full justify-center overflow-y-auto bg-secondary p-3">
         <ResumePreview
           resumeData={resumeData}
+          currentStep={currentStep}
           className="max-w-2xl shadow-md"
         />
       </div>

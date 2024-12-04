@@ -11,12 +11,14 @@ interface ResumePreviewProps {
   resumeData: ResumeValues;
   contentRef?: React.Ref<HTMLDivElement>;
   className?: string;
+  currentStep?: string;
 }
 
 export default function ResumePreview({
   resumeData,
   contentRef,
   className,
+  currentStep,
 }: ResumePreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,13 +40,16 @@ export default function ResumePreview({
         ref={contentRef}
         id="resumePreviewContent"
       >
-        <PersonalInfoHeader resumeData={resumeData} />
-        <SummarySection resumeData={resumeData} />
-        <WorkExperienceSection resumeData={resumeData} />
-        <EducationSection resumeData={resumeData} />
-        <LanguagesSection resumeData={resumeData} />
-        <SkillsSection resumeData={resumeData} />
-        <ReferenceSection resumeData={resumeData} />
+        <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
+        <SummarySection resumeData={resumeData} currentStep={currentStep} />
+        <WorkExperienceSection
+          resumeData={resumeData}
+          currentStep={currentStep}
+        />
+        <EducationSection resumeData={resumeData} currentStep={currentStep} />
+        <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
+        <SkillsSection resumeData={resumeData} currentStep={currentStep} />
+        <ReferenceSection resumeData={resumeData} currentStep={currentStep} />
       </div>
     </div>
   );
@@ -52,9 +57,10 @@ export default function ResumePreview({
 
 interface ResumeSectionProps {
   resumeData: ResumeValues;
+  currentStep?: string;
 }
 
-function PersonalInfoHeader({ resumeData }: ResumeSectionProps) {
+function PersonalInfoHeader({ resumeData, currentStep }: ResumeSectionProps) {
   const {
     photo,
     firstName,
@@ -69,6 +75,15 @@ function PersonalInfoHeader({ resumeData }: ResumeSectionProps) {
   } = resumeData;
 
   const [photoSrc, setPhotoSrc] = useState(photo instanceof File ? "" : photo);
+  const [showIndicator, setShowIndicator] = useState(false);
+
+  //  useEffect to check change in currentStep and show indicator
+  useEffect(() => {
+    if (currentStep === "personal-info") {
+      setShowIndicator(true);
+    }
+    return () => setShowIndicator(false);
+  }, [currentStep]);
 
   useEffect(() => {
     const objectUrl = photo instanceof File ? URL.createObjectURL(photo) : "";
@@ -78,7 +93,17 @@ function PersonalInfoHeader({ resumeData }: ResumeSectionProps) {
   }, [photo]);
 
   return (
-    <div className="flex items-center gap-6">
+    <div
+      className={cn(
+        "flex items-center justify-center gap-6 p-4",
+        showIndicator && "transition-all duration-300",
+      )}
+      style={{
+        backgroundColor: showIndicator
+          ? "rgba(218, 165, 32, 0.4)"
+          : "transparent",
+      }}
+    >
       {photoSrc && (
         <Image
           src={photoSrc}
@@ -96,7 +121,7 @@ function PersonalInfoHeader({ resumeData }: ResumeSectionProps) {
           }}
         />
       )}
-      <div className="space-y-2.5">
+      <div className="space-y-2.5 text-center">
         <div className="space-y-1">
           <p
             className="text-3xl font-bold"
@@ -115,7 +140,7 @@ function PersonalInfoHeader({ resumeData }: ResumeSectionProps) {
             {jobTitle}
           </p>
         </div>
-        <p className="text-xs text-gray-500">
+        <p className="text-center text-xs text-gray-500">
           {city}
           {city && country ? ", " : ""}
           {country}
@@ -127,20 +152,35 @@ function PersonalInfoHeader({ resumeData }: ResumeSectionProps) {
   );
 }
 
-function SummarySection({ resumeData }: ResumeSectionProps) {
+function SummarySection({ resumeData, currentStep }: ResumeSectionProps) {
   const { summary, colorHex } = resumeData;
+  const [showIndicator, setShowIndicator] = useState(false);
+
+  //  useEffect to check change in currentStep and show indicator
+  useEffect(() => {
+    if (currentStep === "summary") {
+      setShowIndicator(true);
+    }
+    return () => setShowIndicator(false);
+  }, [currentStep]);
 
   if (!summary) return null;
-
   return (
     <>
       <hr
-        className="border-2"
+        className="border-1"
         style={{
           borderColor: colorHex,
         }}
       />
-      <div className="break-inside-avoid space-y-3">
+      <div
+        className="break-inside-avoid space-y-3 p-1"
+        style={{
+          backgroundColor: showIndicator
+            ? "rgba(218, 165, 32, 0.4)"
+            : "transparent",
+        }}
+      >
         <p
           className="text-lg font-semibold"
           style={{
@@ -155,8 +195,20 @@ function SummarySection({ resumeData }: ResumeSectionProps) {
   );
 }
 
-function WorkExperienceSection({ resumeData }: ResumeSectionProps) {
+function WorkExperienceSection({
+  resumeData,
+  currentStep,
+}: ResumeSectionProps) {
   const { workExperiences, colorHex } = resumeData;
+  const [showIndicator, setShowIndicator] = useState(false);
+
+  //  useEffect to check change in currentStep and show indicator
+  useEffect(() => {
+    if (currentStep === "work-experience") {
+      setShowIndicator(true);
+    }
+    return () => setShowIndicator(false);
+  }, [currentStep]);
 
   const workExperiencesNotEmpty = workExperiences?.filter(
     (exp) => Object.values(exp).filter(Boolean).length > 0,
@@ -167,12 +219,19 @@ function WorkExperienceSection({ resumeData }: ResumeSectionProps) {
   return (
     <>
       <hr
-        className="border-2"
+        className="border-1"
         style={{
           borderColor: colorHex,
         }}
       />
-      <div className="space-y-3">
+      <div
+        className="space-y-3 p-1"
+        style={{
+          backgroundColor: showIndicator
+            ? "rgba(218, 165, 32, 0.4)"
+            : "transparent",
+        }}
+      >
         <p
           className="text-lg font-semibold"
           style={{
@@ -206,9 +265,17 @@ function WorkExperienceSection({ resumeData }: ResumeSectionProps) {
   );
 }
 
-function EducationSection({ resumeData }: ResumeSectionProps) {
+function EducationSection({ resumeData, currentStep }: ResumeSectionProps) {
   const { educations, colorHex } = resumeData;
+  const [showIndicator, setShowIndicator] = useState(false);
 
+  //  useEffect to check change in currentStep and show indicator
+  useEffect(() => {
+    if (currentStep === "education") {
+      setShowIndicator(true);
+    }
+    return () => setShowIndicator(false);
+  }, [currentStep]);
   const educationsNotEmpty = educations?.filter(
     (edu) => Object.values(edu).filter(Boolean).length > 0,
   );
@@ -223,7 +290,14 @@ function EducationSection({ resumeData }: ResumeSectionProps) {
           borderColor: colorHex,
         }}
       />
-      <div className="space-y-3">
+      <div
+        className="space-y-3 p-1"
+        style={{
+          backgroundColor: showIndicator
+            ? "rgba(218, 165, 32, 0.4)"
+            : "transparent",
+        }}
+      >
         <p
           className="text-lg font-semibold"
           style={{
@@ -257,20 +331,36 @@ function EducationSection({ resumeData }: ResumeSectionProps) {
 }
 
 // Language preview section
-function LanguagesSection({ resumeData }: ResumeSectionProps) {
+function LanguagesSection({ resumeData, currentStep }: ResumeSectionProps) {
   const { languages, colorHex, borderStyle } = resumeData;
+  const [showIndicator, setShowIndicator] = useState(false);
+
+  //  useEffect to check change in currentStep and show indicator
+  useEffect(() => {
+    if (currentStep === "language") {
+      setShowIndicator(true);
+    }
+    return () => setShowIndicator(false);
+  }, [currentStep]);
 
   if (!languages?.length) return null;
 
   return (
     <>
       <hr
-        className="border-2"
+        className="border-1"
         style={{
           borderColor: colorHex,
         }}
       />
-      <div className="break-inside-avoid space-y-3">
+      <div
+        className="break-inside-avoid space-y-3 p-1"
+        style={{
+          backgroundColor: showIndicator
+            ? "rgba(218, 165, 32, 0.4)"
+            : "transparent",
+        }}
+      >
         <p
           className="text-lg font-semibold"
           style={{
@@ -302,20 +392,35 @@ function LanguagesSection({ resumeData }: ResumeSectionProps) {
     </>
   );
 }
-function SkillsSection({ resumeData }: ResumeSectionProps) {
+function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
   const { skills, colorHex, borderStyle } = resumeData;
+  const [showIndicator, setShowIndicator] = useState(false);
 
+  //  useEffect to check change in currentStep and show indicator
+  useEffect(() => {
+    if (currentStep === "skills") {
+      setShowIndicator(true);
+    }
+    return () => setShowIndicator(false);
+  }, [currentStep]);
   if (!skills?.length) return null;
 
   return (
     <>
       <hr
-        className="border-2"
+        className="border-1"
         style={{
           borderColor: colorHex,
         }}
       />
-      <div className="break-inside-avoid space-y-3">
+      <div
+        className="break-inside-avoid space-y-3 p-1"
+        style={{
+          backgroundColor: showIndicator
+            ? "rgba(218, 165, 32, 0.4)"
+            : "transparent",
+        }}
+      >
         <p
           className="text-lg font-semibold"
           style={{
@@ -349,9 +454,17 @@ function SkillsSection({ resumeData }: ResumeSectionProps) {
 }
 
 // reference section
-function ReferenceSection({ resumeData }: ResumeSectionProps) {
+function ReferenceSection({ resumeData, currentStep }: ResumeSectionProps) {
   const { references, colorHex } = resumeData;
+  const [showIndicator, setShowIndicator] = useState(false);
 
+  //  useEffect to check change in currentStep and show indicator
+  useEffect(() => {
+    if (currentStep === "reference") {
+      setShowIndicator(true);
+    }
+    return () => setShowIndicator(false);
+  }, [currentStep]);
   const referencesNotEmpty = references?.filter(
     (edu) => Object.values(edu).filter(Boolean).length > 0,
   );
@@ -361,40 +474,52 @@ function ReferenceSection({ resumeData }: ResumeSectionProps) {
   return (
     <>
       <hr
-        className="border-2"
+        className="border-1"
         style={{
           borderColor: colorHex,
         }}
       />
-      <div className="space-y-3">
+      <div
+        className="space-y-3 p-1"
+        style={{
+          backgroundColor: showIndicator
+            ? "rgba(218, 165, 32, 0.4)"
+            : "transparent",
+        }}
+      >
         <p
-          className="text-lg font-semibold"
+          className="text-xl font-semibold"
           style={{
             color: colorHex,
           }}
         >
-          Reference
+          References
         </p>
-        {referencesNotEmpty.map((ref, index) => (
-          <div key={index} className="break-inside-avoid space-y-1">
-            <div
-              className="flex items-center justify-between text-sm font-semibold"
-              style={{
-                color: colorHex,
-              }}
-            >
-              <span>
-                {ref.referenceFirstName} {ref.referenceLastName}
-              </span>
+        <div className="grid grid-cols-2 gap-3">
+          {referencesNotEmpty.map((ref, index) => (
+            <div key={index} className="break-inside-avoid space-y-1">
+              <div
+                className="flex items-center justify-between text-xl font-semibold"
+                style={{
+                  color: colorHex,
+                }}
+              >
+                <span className="text-lg font-semibold">
+                  {ref.referenceFirstName} {ref.referenceLastName}
+                </span>
+              </div>
+              <p className="text-lg">
+                {ref.referenceJobTitle} ,
+                <span className="text-lg">{ref.referenceCompanyName}</span>
+              </p>
+
+              <p className="text-xs">{ref.referenceEmail}</p>
+              <p className="text-xs">{ref.referencePhone}</p>
+              <p className="text-xs">{ref.referenceAddress}</p>
+              <p className="text-xs">{ref.referenceDescription}</p>
             </div>
-            <p className="text-xs font-semibold">{ref.referenceJobTitle}</p>
-            <p className="text-xs font-semibold">{ref.referenceCompanyName}</p>
-            <p className="text-xs font-semibold">{ref.referenceEmail}</p>
-            <p className="text-xs font-semibold">{ref.referencePhone}</p>
-            <p className="text-xs font-semibold">{ref.referenceAddress}</p>
-            <p className="text-xs font-semibold">{ref.referenceDescription}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );

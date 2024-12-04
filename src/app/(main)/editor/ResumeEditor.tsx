@@ -12,6 +12,7 @@ import ResumePreviewSection from "./ResumePreviewSection";
 import { steps } from "./steps";
 import useAutoSaveResume from "./useAutoSaveResume";
 
+
 interface ResumeEditorProps {
   resumeToEdit: ResumeServerData | null;
 }
@@ -43,12 +44,12 @@ export default function ResumeEditor({ resumeToEdit }: ResumeEditorProps) {
 
   return (
     <div className="flex grow flex-col">
-      <header className="border-b px-3 py-3 text-center">
+      {/* <header className="border-b px-3 py-3 text-center">
         <p className="text-sm text-muted-foreground">
           Follow the steps below to create your resume. Your progress will be
           saved automatically.
         </p>
-      </header>
+      </header> */}
       <main className="relative grow">
         <div className="absolute bottom-0 top-0 flex w-full">
           <div
@@ -70,6 +71,7 @@ export default function ResumeEditor({ resumeToEdit }: ResumeEditorProps) {
             resumeData={resumeData}
             setResumeData={setResumeData}
             className={cn(showSmResumePreview && "flex")}
+            currentStep={currentStep}
           />
         </div>
       </main>

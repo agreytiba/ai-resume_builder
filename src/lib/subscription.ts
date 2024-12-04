@@ -19,14 +19,14 @@ export const getUserSubscriptionLevel = cache(
     if (
       subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTHLY
     ) {
-      return "pro";
+      return "free";
     }
 
     if (
       subscription.stripePriceId ===
       env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_PLUS_MONTHLY
     ) {
-      return "pro_plus";
+      return "free";
     }
 
     throw new Error("Invalid subscription");

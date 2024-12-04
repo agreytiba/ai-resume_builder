@@ -22,7 +22,7 @@ datasource db {
 model Resume {
   id     String @id @default(cuid())
   userId String
-
+  templateNo Int @default(1)
   title       String?
   description String?
 

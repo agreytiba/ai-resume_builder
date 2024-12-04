@@ -227,12 +227,40 @@ function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
           )}
         />
       </div>
+      <div className="grid grid-cols-2 gap-3">
+        <FormField
+          control={form.control}
+          name={`references.${index}.referenceEmail`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>email</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name={`references.${index}.referencePhone`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contact Number</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
       <FormField
         control={form.control}
         name={`references.${index}.referenceDescription`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Descriptions</FormLabel>
+            <FormLabel>Descriptions (optional)</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -245,7 +273,7 @@ function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
         name={`references.${index}.referenceAddress`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company address</FormLabel>
+            <FormLabel>Company address (optional)</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
