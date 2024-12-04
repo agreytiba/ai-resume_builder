@@ -1,0 +1,51 @@
+{
+  "photo": null,
+  "firstName": "John",
+  "lastName": "Doe",
+  "jobTitle": "Software Engineer",
+  "city": "New York",
+  "country": "USA",
+  "phone": "+1 555-555-5555",
+  "email": "john.doe@example.com",
+  "colorHex": "#000000",
+  "borderStyle": "CIRCLE",
+  "summary": "Enthusiastic software engineer with 5 years of experience in full-stack development.",
+  "workExperiences": [
+    {
+      "position": "Senior Developer",
+      "company": "TechCorp",
+      "startDate": "2020-01",
+      "endDate": "2023-06",
+      "description": "Led a team to develop scalable web applications."
+    },
+    {
+      "position": "Junior Developer",
+      "company": "CodeWorks",
+      "startDate": "2017-05",
+      "endDate": "2019-12",
+      "description": "Contributed to frontend and backend features."
+    }
+  ],
+  "educations": [
+    {
+      "degree": "BSc in Computer Science",
+      "school": "MIT",
+      "startDate": "2013-09",
+      "endDate": "2017-05"
+    }
+  ],
+  "languages": ["English", "Spanish"],
+  "skills": ["React", "Node.js", "TypeScript", "GraphQL"],
+  "references": [
+    {
+      "referenceFirstName": "Jane",
+      "referenceLastName": "Smith",
+      "referenceJobTitle": "Manager",
+      "referenceCompanyName": "TechCorp",
+      "referenceEmail": "jane.smith@example.com",
+      "referencePhone": "+1 555-555-1234",
+      "referenceAddress": "123 Elm Street, Springfield, USA",
+      "referenceDescription": "Jane was my direct manager for 3 years."
+    }
+  ]
+}

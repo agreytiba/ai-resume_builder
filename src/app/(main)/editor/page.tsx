@@ -5,7 +5,10 @@ import { Metadata } from "next";
 import ResumeEditor from "./ResumeEditor";
 
 interface PageProps {
-  searchParams: Promise<{ resumeId?: string }>;
+  searchParams: Promise<{
+    resumeId?: string;
+    template: number | 1;
+  }>;
 }
 
 export const metadata: Metadata = {

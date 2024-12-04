@@ -1,62 +1,68 @@
+"use client";
+import data from "@/lib/data.json"; // Import the data.json file
 import { BorderStyles } from "@/app/(main)/editor/BorderStyleButton";
-import useDimensions from "@/hooks/useDimensions";
+
 import { cn } from "@/lib/utils";
 import { ResumeValues } from "@/lib/validation";
 import { formatDate } from "date-fns";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import { Badge } from "./ui/badge";
-import TemplateSelector from "./TemplateSelector";
-import { useSearchParams } from "next/navigation";
 
-interface ResumePreviewProps {
-  resumeData: ResumeValues;
+import { Badge } from "@/components//ui/badge";
+import TemplateSelector from "@/components/TemplateSelector";
+import useDimensions from "@/hooks/useDimensions";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import ContentLoader from "@/components/ContentLoader";
+
+interface DisplayTemplateProps {
+  template: number;
   contentRef?: React.Ref<HTMLDivElement>;
-  className?: string;
-  currentStep?: string;
 }
-
-export default function ResumePreview({
-  resumeData,
+export default function DisplayTemplate({
+  template = 1,
   contentRef,
-  className,
-  currentStep,
-}: ResumePreviewProps) {
+}: DisplayTemplateProps) {
+  const resumeData: ResumeValues = data; // Use imported JSON data
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { width } = useDimensions(containerRef);
 
-  const searchParams = useSearchParams();
-  const template = searchParams.get("template");
-  const resumeTemplate = template ? template : "1";
+  // onClick navigate to othe page
+  const router = useRouter();
 
-  console.log(typeof resumeTemplate);
-
+  const handleClick = () => {
+    setIsLoading(true);
+    router.push(`/editor?template=${template}`);
+  };
+  if (isLoading) {
+    return <ContentLoader />;
+  }
   return (
     <div
       className={cn(
-        "aspect-[210/297] h-fit w-full bg-white text-black",
-        className,
+        "border-1 aspect-[210/297] h-fit w-full cursor-pointer rounded-lg p-2 text-black shadow-md transition duration-200 hover:bg-gray-400 hover:shadow-lg",
       )}
+      onClick={handleClick}
       ref={containerRef}
     >
-      <div
-        className={cn("space-y-6 p-6", !width && "invisible")}
-        style={{
-          zoom: (1 / 794) * width,
-        }}
-        ref={contentRef}
-        id="resumePreviewContent"
-      >
-        {/* <ResumePreviewTemplate4
-          resumeData={resumeData}
-          currentStep={currentStep}
-        /> */}
-        <TemplateSelector
-          resumeData={resumeData}
-          currentStep={currentStep}
-          template={resumeTemplate}
-        />
+      <div>
+        <div
+          className={cn("space-y-6 p-6", !width && "invisible")}
+          style={{
+            zoom: (1 / 794) * width,
+          }}
+          ref={contentRef}
+          id="resumePreviewContent"
+        >
+          <div
+            className={cn("aspect-[210/297] h-fit w-full bg-white text-black")}
+          >
+            <div className={cn("space-y-6 p-6")} id="resumePreviewContent">
+              <TemplateSelector resumeData={resumeData} template={template} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -64,7 +70,6 @@ export default function ResumePreview({
 
 interface ResumeSectionProps {
   resumeData: ResumeValues;
-  currentStep?: string;
 }
 
 interface PersonalInfoHeaderProps extends ResumeSectionProps {
@@ -73,11 +78,9 @@ interface PersonalInfoHeaderProps extends ResumeSectionProps {
 
 export function PersonalInfoHeader({
   resumeData,
-  currentStep,
   position = "center", // default alignment is center
 }: PersonalInfoHeaderProps) {
   const {
-    photo,
     firstName,
     lastName,
     jobTitle,
@@ -86,62 +89,16 @@ export function PersonalInfoHeader({
     phone,
     email,
     colorHex,
-    borderStyle,
   } = resumeData;
-
-  const [photoSrc, setPhotoSrc] = useState(photo instanceof File ? "" : photo);
-  const [showIndicator, setShowIndicator] = useState(false);
-
-  // Show indicator based on the current step
-  useEffect(() => {
-    if (currentStep === "personal-info") {
-      setShowIndicator(true);
-    }
-    return () => setShowIndicator(false);
-  }, [currentStep]);
-
-  // Generate photo URL from file
-  useEffect(() => {
-    const objectUrl = photo instanceof File ? URL.createObjectURL(photo) : "";
-    if (objectUrl) setPhotoSrc(objectUrl);
-    if (photo === null) setPhotoSrc("");
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [photo]);
 
   return (
     <div
-      className={cn(
-        "flex items-center gap-6 p-4",
-        {
-          "justify-start": position === "left",
-          "justify-center": position === "center",
-          "justify-end": position === "right",
-        },
-        showIndicator && "transition-all duration-300",
-      )}
-      style={{
-        backgroundColor: showIndicator
-          ? "rgba(218, 165, 32, 0.4)"
-          : "transparent",
-      }}
+      className={cn("flex items-center gap-6 p-4", {
+        "justify-start": position === "left",
+        "justify-center": position === "center",
+        "justify-end": position === "right",
+      })}
     >
-      {photoSrc && (
-        <Image
-          src={photoSrc}
-          width={100}
-          height={100}
-          alt="Author photo"
-          className="aspect-square object-cover"
-          style={{
-            borderRadius:
-              borderStyle === BorderStyles.SQUARE
-                ? "0px"
-                : borderStyle === BorderStyles.CIRCLE
-                  ? "9999px"
-                  : "10%",
-          }}
-        />
-      )}
       <div className="space-y-3">
         {/* Name and Job Title */}
         <div className="space-y-1">
@@ -176,20 +133,8 @@ export function PersonalInfoHeader({
   );
 }
 
-export function SummarySection({
-  resumeData,
-  currentStep,
-}: ResumeSectionProps) {
+export function SummarySection({ resumeData }: ResumeSectionProps) {
   const { summary, colorHex } = resumeData;
-  const [showIndicator, setShowIndicator] = useState(false);
-
-  //  useEffect to check change in currentStep and show indicator
-  useEffect(() => {
-    if (currentStep === "summary") {
-      setShowIndicator(true);
-    }
-    return () => setShowIndicator(false);
-  }, [currentStep]);
 
   if (!summary) return null;
   return (
@@ -200,14 +145,7 @@ export function SummarySection({
           borderColor: colorHex,
         }}
       />
-      <div
-        className="break-inside-avoid space-y-3 p-1"
-        style={{
-          backgroundColor: showIndicator
-            ? "rgba(218, 165, 32, 0.4)"
-            : "transparent",
-        }}
-      >
+      <div className="break-inside-avoid space-y-3 p-1">
         <p
           className="text-lg font-semibold"
           style={{
@@ -222,20 +160,8 @@ export function SummarySection({
   );
 }
 
-export function WorkExperienceSection({
-  resumeData,
-  currentStep,
-}: ResumeSectionProps) {
+export function WorkExperienceSection({ resumeData }: ResumeSectionProps) {
   const { workExperiences, colorHex } = resumeData;
-  const [showIndicator, setShowIndicator] = useState(false);
-
-  //  useEffect to check change in currentStep and show indicator
-  useEffect(() => {
-    if (currentStep === "work-experience") {
-      setShowIndicator(true);
-    }
-    return () => setShowIndicator(false);
-  }, [currentStep]);
 
   const workExperiencesNotEmpty = workExperiences?.filter(
     (exp) => Object.values(exp).filter(Boolean).length > 0,
@@ -251,14 +177,7 @@ export function WorkExperienceSection({
           borderColor: colorHex,
         }}
       />
-      <div
-        className="space-y-3 p-1"
-        style={{
-          backgroundColor: showIndicator
-            ? "rgba(218, 165, 32, 0.4)"
-            : "transparent",
-        }}
-      >
+      <div className="space-y-3 p-1">
         <p
           className="text-lg font-semibold"
           style={{
@@ -292,20 +211,9 @@ export function WorkExperienceSection({
   );
 }
 
-export function EducationSection({
-  resumeData,
-  currentStep,
-}: ResumeSectionProps) {
+export function EducationSection({ resumeData }: ResumeSectionProps) {
   const { educations, colorHex } = resumeData;
-  const [showIndicator, setShowIndicator] = useState(false);
 
-  //  useEffect to check change in currentStep and show indicator
-  useEffect(() => {
-    if (currentStep === "education") {
-      setShowIndicator(true);
-    }
-    return () => setShowIndicator(false);
-  }, [currentStep]);
   const educationsNotEmpty = educations?.filter(
     (edu) => Object.values(edu).filter(Boolean).length > 0,
   );
@@ -320,14 +228,7 @@ export function EducationSection({
           borderColor: colorHex,
         }}
       />
-      <div
-        className="space-y-3 p-1"
-        style={{
-          backgroundColor: showIndicator
-            ? "rgba(218, 165, 32, 0.4)"
-            : "transparent",
-        }}
-      >
+      <div className="space-y-3 p-1">
         <p
           className="text-lg font-semibold"
           style={{
@@ -361,20 +262,8 @@ export function EducationSection({
 }
 
 // Language preview section
-export function LanguagesSection({
-  resumeData,
-  currentStep,
-}: ResumeSectionProps) {
+export function LanguagesSection({ resumeData }: ResumeSectionProps) {
   const { languages, colorHex, borderStyle } = resumeData;
-  const [showIndicator, setShowIndicator] = useState(false);
-
-  //  useEffect to check change in currentStep and show indicator
-  useEffect(() => {
-    if (currentStep === "language") {
-      setShowIndicator(true);
-    }
-    return () => setShowIndicator(false);
-  }, [currentStep]);
 
   if (!languages?.length) return null;
 
@@ -386,14 +275,7 @@ export function LanguagesSection({
           borderColor: colorHex,
         }}
       />
-      <div
-        className="break-inside-avoid space-y-3 p-1"
-        style={{
-          backgroundColor: showIndicator
-            ? "rgba(218, 165, 32, 0.4)"
-            : "transparent",
-        }}
-      >
+      <div className="break-inside-avoid space-y-3 p-1">
         <p
           className="text-lg font-semibold"
           style={{
@@ -425,17 +307,9 @@ export function LanguagesSection({
     </>
   );
 }
-export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
+export function SkillsSection({ resumeData }: ResumeSectionProps) {
   const { skills, colorHex, borderStyle } = resumeData;
-  const [showIndicator, setShowIndicator] = useState(false);
 
-  //  useEffect to check change in currentStep and show indicator
-  useEffect(() => {
-    if (currentStep === "skills") {
-      setShowIndicator(true);
-    }
-    return () => setShowIndicator(false);
-  }, [currentStep]);
   if (!skills?.length) return null;
 
   return (
@@ -446,14 +320,7 @@ export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
           borderColor: colorHex,
         }}
       />
-      <div
-        className="break-inside-avoid space-y-3 p-1"
-        style={{
-          backgroundColor: showIndicator
-            ? "rgba(218, 165, 32, 0.4)"
-            : "transparent",
-        }}
-      >
+      <div className="break-inside-avoid space-y-3 p-1">
         <p
           className="text-lg font-semibold"
           style={{
@@ -487,20 +354,9 @@ export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
 }
 
 // reference section
-export function ReferenceSection({
-  resumeData,
-  currentStep,
-}: ResumeSectionProps) {
+export function ReferenceSection({ resumeData }: ResumeSectionProps) {
   const { references, colorHex } = resumeData;
-  const [showIndicator, setShowIndicator] = useState(false);
 
-  //  useEffect to check change in currentStep and show indicator
-  useEffect(() => {
-    if (currentStep === "reference") {
-      setShowIndicator(true);
-    }
-    return () => setShowIndicator(false);
-  }, [currentStep]);
   const referencesNotEmpty = references?.filter(
     (edu) => Object.values(edu).filter(Boolean).length > 0,
   );
@@ -515,14 +371,7 @@ export function ReferenceSection({
           borderColor: colorHex,
         }}
       />
-      <div
-        className="space-y-3 p-1"
-        style={{
-          backgroundColor: showIndicator
-            ? "rgba(218, 165, 32, 0.4)"
-            : "transparent",
-        }}
-      >
+      <div className="space-y-3 p-1">
         <p
           className="text-xl font-semibold"
           style={{

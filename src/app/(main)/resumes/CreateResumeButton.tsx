@@ -1,37 +1,33 @@
 "use client";
 
+import ContentLoader from "@/components/ContentLoader";
 import { Button } from "@/components/ui/button";
-import usePremiumModal from "@/hooks/usePremiumModal";
 import { PlusSquare } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-interface CreateResumeButtonProps {
-  canCreate: boolean;
-}
+export default function CreateResumeButton() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const premiumModal = usePremiumModal();
+  // init navigation
+  const router = useRouter();
+  // handle show the editor
+  const handleClick = () => {
+    setIsLoading(true);
+    router.push("/editor");
+  };
 
-export default function CreateResumeButton({
-  canCreate,
-}: CreateResumeButtonProps) {
-  const premiumModal = usePremiumModal();
-
-  if (canCreate) {
-    return (
-      <Button asChild className="mx-auto flex w-fit gap-2">
-        <Link href="/editor">
-          <PlusSquare className="size-5" />
-          New resume
-        </Link>
-      </Button>
-    );
+  if (isLoading) {
+    return <ContentLoader />;
   }
-
   return (
-    <Button
-      onClick={() => premiumModal.setOpen(true)}
-      className="mx-auto flex w-fit gap-2"
-    >
-      <PlusSquare className="size-5" />
-      New resume
+    <Button asChild className="mx-auto flex w-fit gap-2">
+      <div onClick={handleClick}>
+        <PlusSquare className="size-5" />
+        New resume
+      </div>
     </Button>
   );
 }
+
+

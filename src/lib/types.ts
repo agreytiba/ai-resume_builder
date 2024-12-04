@@ -5,6 +5,12 @@ export interface EditorFormProps {
   resumeData: ResumeValues;
   setResumeData: (data: ResumeValues) => void;
 }
+export interface ResumePreviewProps {
+  resumeData: ResumeValues;
+  contentRef?: React.Ref<HTMLDivElement>;
+  className?: string;
+  currentStep?: string;
+}
 
 export const resumeDataInclude = {
   workExperiences: true,
@@ -15,3 +21,5 @@ export const resumeDataInclude = {
 export type ResumeServerData = Prisma.ResumeGetPayload<{
   include: typeof resumeDataInclude;
 }>;
+
+
