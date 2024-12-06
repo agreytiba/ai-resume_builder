@@ -151,3 +151,21 @@ export const generateSummarySchema = z.object({
 });
 
 export type GenerateSummaryInput = z.infer<typeof generateSummarySchema>;
+
+export type PaymentOptionsType = {
+  customerName: string;
+  customerEmail: string;
+  amountToCharge: number;
+  customerPhoneNumber: string;
+};
+
+export type RequestResponseType = {
+  message: unknown;
+  success: boolean;
+};
+
+export type ZenoPayOptionsType = {
+  apiKey: string;
+  secretKey: string;
+  accountID: string;
+};

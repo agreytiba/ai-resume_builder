@@ -1,6 +1,6 @@
 "use client";
 
-import logo from "@/assets/logo.png";
+import logo from "@/assets/LOGO.jpg";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
@@ -20,18 +20,20 @@ export default function Navbar() {
           <Image
             src={logo}
             alt="Logo"
-            width={35}
-            height={35}
-            className="rounded-full"
+            width={80}
+            height={80}
+            className="rounded"
           />
-          <span className="text-xl font-bold tracking-tight">
+          <span className="text-xl font-bold tracking-tight text-yellow-500">
             AI Resume Builder
           </span>
         </Link>
         <div className="flex items-center gap-3">
-          <Button asChild className="hover:bg-gray-400">
-            <Link href="/resumes" className="text-sm font-bold text-black">
-              {" "}
+          <Button asChild className="hover:opacity-50">
+            <Link
+              href="/resumes"
+              className="bg-yellow-500 text-sm font-bold text-black"
+            >
               Dashboard
             </Link>
           </Button>

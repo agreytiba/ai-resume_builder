@@ -69,7 +69,7 @@ export default function Page() {
         id="home"
         className="flex h-screen flex-col items-center px-8 py-16 lg:flex-row lg:items-start"
       >
-        <div className="max-w-2xl flex-1 space-y-4 text-center lg:text-left">
+        <div className="max-w-2xl flex-1 text-center lg:text-left">
           <h1 className="text-5xl font-bold leading-tight text-gray-900">
             CV Fasta
           </h1>
@@ -84,7 +84,7 @@ export default function Page() {
           <div className="mt-8 flex flex-col items-center space-y-4 md:flex-row md:space-x-6 md:space-y-0">
             <Link
               href={"/select-template"}
-              className="rounded-lg bg-yellow-500 px-6 py-3 text-black shadow-lg hover:opacity-50 hover:shadow-sm"
+              className="rounded-lg bg-yellow-500 px-6 py-3 text-black shadow-lg hover:bg-blue-700"
             >
               Build Your Resume / CV
             </Link>
@@ -109,7 +109,7 @@ export default function Page() {
             alt="AI Resume Preview"
             objectFit="cover"
             width={400}
-            height={400}
+            height={450}
             className="mx-auto rounded-lg shadow-lg"
           />
         </motion.div>
@@ -232,9 +232,8 @@ export default function Page() {
                       Enter Your Details
                     </h4>
                     <p className="text-gray-600">
-                      Add your person details,
-                      experience,education,skills,proffesional summarry . Let
-                      our AI optimize the layout and content.
+                      Add your experience, skills, and achievements. Let our AI
+                      optimize the layout and content.
                     </p>
                   </div>
                 </div>
