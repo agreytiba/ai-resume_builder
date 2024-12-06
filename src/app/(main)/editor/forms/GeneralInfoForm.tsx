@@ -37,7 +37,7 @@ export default function GeneralInfoForm({
       setResumeData({ ...resumeData, ...values, templateNo });
     });
     return unsubscribe;
-  }, [form, resumeData, setResumeData]);
+  }, [form, resumeData, setResumeData, templateNo]);
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
