@@ -16,14 +16,14 @@ interface ResumePreviewProps {
   currentStep?: string;
 }
 
-export default function ResumePreviewTemplate5({
+export default function ResumePreviewTemplate8({
   resumeData,
   currentStep,
 }: ResumePreviewProps) {
   return (
     <div className="grid grid-cols-12 gap-6 p-6">
       {/* Left Column */}
-      <div className="col-span-4 space-y-4 rounded-lg bg-gray-100 p-4">
+      <div className="col-span-4 space-y-4 rounded-lg bg-green-100 p-4">
         <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
         <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
         <SkillsSection

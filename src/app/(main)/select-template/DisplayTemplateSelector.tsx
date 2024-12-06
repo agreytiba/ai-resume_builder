@@ -1,27 +1,28 @@
 "use client";
 
+import ResumePreviewTemplate1 from "@/components/templates/list/template1";
+import ResumePreviewTemplate2 from "@/components/templates/list/template2";
+import ResumePreviewTemplate3 from "@/components/templates/list/template3";
+import ResumePreviewTemplate4 from "@/components/templates/list/template4";
+import ResumePreviewTemplate5 from "@/components/templates/list/template5";
+import ResumePreviewTemplate6 from "@/components/templates/list/template6";
+import ResumePreviewTemplate7 from "@/components/templates/list/template7";
+import ResumePreviewTemplate8 from "@/components/templates/list/template8";
+import ResumePreviewTemplate9 from "@/components/templates/list/template9";
 import { ResumeValues } from "@/lib/validation";
-import ResumePreviewTemplate1 from "./templates/list/template1";
-import ResumePreviewTemplate2 from "./templates/list/template2";
-import ResumePreviewTemplate3 from "./templates/list/template3";
-import ResumePreviewTemplate4 from "./templates/list/template4";
-import ResumePreviewTemplate5 from "./templates/list/template5";
-import ResumePreviewTemplate6 from "./templates/list/template6";
-import ResumePreviewTemplate7 from "./templates/list/template7";
-import ResumePreviewTemplate8 from "./templates/list/template8";
-import ResumePreviewTemplate9 from "./templates/list/template9";
-
 interface TemplateSelectorProps extends ResumeValues {
   resumeData: ResumeValues;
   currentStep?: string;
+  template: number | 1;
 }
 
-export default function TemplateSelector({
+export default function DisplayTemplateSelector({
   resumeData,
   currentStep,
+  template,
 }: TemplateSelectorProps) {
-  const resumeTemplate = resumeData.templateNo;
-  switch (resumeTemplate) {
+  //   const resumeTemplate = resumeData.templateNo;
+  switch (template) {
     case 1:
       return (
         <ResumePreviewTemplate1

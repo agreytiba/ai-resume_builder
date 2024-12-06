@@ -16,7 +16,7 @@
       "company": "TechCorp",
       "startDate": "2020-01",
       "endDate": "2023-06",
-      "description": "Led a team to develop scalable web applications."
+      "description": "Led a team to develop scalable web applications. website  and system deesi Led a team to develop scalable web applications. website  and system deesi"
     },
     {
       "position": "Junior Developer",
@@ -32,6 +32,12 @@
       "school": "MIT",
       "startDate": "2013-09",
       "endDate": "2017-05"
+    },
+    {
+      "degree": "Master in Computer Science",
+      "school": "MIT",
+      "startDate": "2019-09",
+      "endDate": "2020-05"
     }
   ],
   "languages": ["English", "Spanish"],
@@ -43,6 +49,16 @@
       "referenceJobTitle": "Manager",
       "referenceCompanyName": "TechCorp",
       "referenceEmail": "jane.smith@example.com",
+      "referencePhone": "+1 555-555-1234",
+      "referenceAddress": "123 Elm Street, Springfield, USA",
+      "referenceDescription": "Jane was my direct manager for 3 years."
+    },
+    {
+      "referenceFirstName": "John",
+      "referenceLastName": "Smith",
+      "referenceJobTitle": "Hr",
+      "referenceCompanyName": "TechCorp",
+      "referenceEmail": "john.smith@example.com",
       "referencePhone": "+1 555-555-1234",
       "referenceAddress": "123 Elm Street, Springfield, USA",
       "referenceDescription": "Jane was my direct manager for 3 years."

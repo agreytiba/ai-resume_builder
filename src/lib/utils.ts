@@ -21,6 +21,7 @@ export function fileReplacer(key: unknown, value: unknown) {
 export function mapToResumeValues(data: ResumeServerData): ResumeValues {
   return {
     id: data.id,
+    templateNo: data.templateNo || 0,
     title: data.title || undefined,
     description: data.description || undefined,
     photo: data.photoUrl || undefined,

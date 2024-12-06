@@ -15,23 +15,44 @@ export default function ResumePreviewTemplate3({
   return (
     <div className="grid grid-cols-1 gap-4 p-6">
       <div className="border p-4">
-        <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
+        <PersonalInfoHeader
+          resumeData={resumeData}
+          currentStep={currentStep}
+          showHrline={true}
+        />
       </div>
       <div className="border p-4">
-        <SummarySection resumeData={resumeData} currentStep={currentStep} />
+        <SummarySection
+          resumeData={resumeData}
+          currentStep={currentStep}
+          showHrline={true}
+        />
       </div>
       <div className="border p-4">
         <WorkExperienceSection
           resumeData={resumeData}
           currentStep={currentStep}
+          showHrline={true}
         />
       </div>
       <div className="border p-4">
-        <EducationSection resumeData={resumeData} currentStep={currentStep} />
+        <EducationSection
+          resumeData={resumeData}
+          currentStep={currentStep}
+          showHrline={true}
+        />
       </div>
       <div className="border p-4">
-        <SkillsSection resumeData={resumeData} currentStep={currentStep} />
-        <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
+        <SkillsSection
+          resumeData={resumeData}
+          currentStep={currentStep}
+          showHrline={true}
+        />
+        <LanguagesSection
+          resumeData={resumeData}
+          currentStep={currentStep}
+          showHrline={true}
+        />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function CreateResumeButton() {
   // handle show the editor
   const handleClick = () => {
     setIsLoading(true);
-    router.push("/editor");
+    router.push("/select-template");
   };
 
   if (isLoading) {

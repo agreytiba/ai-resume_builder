@@ -5,9 +5,7 @@ import { ResumeValues } from "@/lib/validation";
 import { formatDate } from "date-fns";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { Badge } from "./ui/badge";
 import TemplateSelector from "./TemplateSelector";
-import { useSearchParams } from "next/navigation";
 
 interface ResumePreviewProps {
   resumeData: ResumeValues;
@@ -26,11 +24,9 @@ export default function ResumePreview({
 
   const { width } = useDimensions(containerRef);
 
-  const searchParams = useSearchParams();
-  const template = searchParams.get("template");
-  const resumeTemplate = template ? template : "1";
-
-  console.log(typeof resumeTemplate);
+  // const searchParams = useSearchParams();
+  // const template = searchParams.get("template");
+  // const resumeTemplate = template ? template : "1";
 
   return (
     <div
@@ -52,11 +48,7 @@ export default function ResumePreview({
           resumeData={resumeData}
           currentStep={currentStep}
         /> */}
-        <TemplateSelector
-          resumeData={resumeData}
-          currentStep={currentStep}
-          template={resumeTemplate}
-        />
+        <TemplateSelector resumeData={resumeData} currentStep={currentStep} />
       </div>
     </div>
   );
@@ -65,6 +57,7 @@ export default function ResumePreview({
 interface ResumeSectionProps {
   resumeData: ResumeValues;
   currentStep?: string;
+  showHrline?: boolean;
 }
 
 interface PersonalInfoHeaderProps extends ResumeSectionProps {
@@ -179,6 +172,7 @@ export function PersonalInfoHeader({
 export function SummarySection({
   resumeData,
   currentStep,
+  showHrline = false,
 }: ResumeSectionProps) {
   const { summary, colorHex } = resumeData;
   const [showIndicator, setShowIndicator] = useState(false);
@@ -198,6 +192,7 @@ export function SummarySection({
         className="border-1"
         style={{
           borderColor: colorHex,
+          display: showHrline ? "none" : "block",
         }}
       />
       <div
@@ -225,6 +220,7 @@ export function SummarySection({
 export function WorkExperienceSection({
   resumeData,
   currentStep,
+  showHrline = false,
 }: ResumeSectionProps) {
   const { workExperiences, colorHex } = resumeData;
   const [showIndicator, setShowIndicator] = useState(false);
@@ -249,6 +245,7 @@ export function WorkExperienceSection({
         className="border-1"
         style={{
           borderColor: colorHex,
+          display: showHrline ? "none" : "block",
         }}
       />
       <div
@@ -295,6 +292,7 @@ export function WorkExperienceSection({
 export function EducationSection({
   resumeData,
   currentStep,
+  showHrline = false,
 }: ResumeSectionProps) {
   const { educations, colorHex } = resumeData;
   const [showIndicator, setShowIndicator] = useState(false);
@@ -318,6 +316,7 @@ export function EducationSection({
         className="border-1"
         style={{
           borderColor: colorHex,
+          display: showHrline ? "none" : "block",
         }}
       />
       <div
@@ -360,15 +359,20 @@ export function EducationSection({
   );
 }
 
-// Language preview section
+interface LanguagesSectionProps extends ResumeSectionProps {
+  listAlignment?: "column" | "row"; // Prop to define alignment
+}
+
 export function LanguagesSection({
   resumeData,
   currentStep,
-}: ResumeSectionProps) {
+  listAlignment = "column",
+  showHrline = false,
+}: LanguagesSectionProps) {
   const { languages, colorHex, borderStyle } = resumeData;
   const [showIndicator, setShowIndicator] = useState(false);
 
-  //  useEffect to check change in currentStep and show indicator
+  // useEffect to check change in currentStep and show indicator
   useEffect(() => {
     if (currentStep === "language") {
       setShowIndicator(true);
@@ -384,6 +388,7 @@ export function LanguagesSection({
         className="border-1"
         style={{
           borderColor: colorHex,
+          display: showHrline ? "none" : "block",
         }}
       />
       <div
@@ -402,13 +407,16 @@ export function LanguagesSection({
         >
           Language proficiency
         </p>
-        <div className="flex break-inside-avoid flex-wrap gap-2">
+        <ul
+          className={`flex ${
+            listAlignment === "row" ? "flex-row gap-4" : "flex-col gap-2"
+          }`}
+        >
           {languages.map((language, index) => (
-            <Badge
+            <li
               key={index}
-              className="rounded-md bg-black text-white hover:bg-black"
               style={{
-                backgroundColor: colorHex,
+                color: colorHex,
                 borderRadius:
                   borderStyle === BorderStyles.SQUARE
                     ? "0px"
@@ -418,24 +426,35 @@ export function LanguagesSection({
               }}
             >
               {language}
-            </Badge>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </>
   );
 }
-export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
+
+interface SkillsSectionProps extends ResumeSectionProps {
+  listAlignment?: "column" | "row"; // Prop to define alignment
+}
+
+export function SkillsSection({
+  resumeData,
+  currentStep,
+  listAlignment = "row",
+  showHrline = false,
+}: SkillsSectionProps) {
   const { skills, colorHex, borderStyle } = resumeData;
   const [showIndicator, setShowIndicator] = useState(false);
 
-  //  useEffect to check change in currentStep and show indicator
+  // useEffect to check change in currentStep and show indicator
   useEffect(() => {
     if (currentStep === "skills") {
       setShowIndicator(true);
     }
     return () => setShowIndicator(false);
   }, [currentStep]);
+
   if (!skills?.length) return null;
 
   return (
@@ -444,6 +463,7 @@ export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
         className="border-1"
         style={{
           borderColor: colorHex,
+          display: showHrline ? "none" : "block",
         }}
       />
       <div
@@ -462,13 +482,16 @@ export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
         >
           Skills
         </p>
-        <div className="flex break-inside-avoid flex-wrap gap-2">
+        <ul
+          className={`flex ${
+            listAlignment === "row" ? "flex-row gap-4" : "flex-col gap-2"
+          }`}
+        >
           {skills.map((skill, index) => (
-            <Badge
+            <li
               key={index}
-              className="rounded-md bg-black text-white hover:bg-black"
               style={{
-                backgroundColor: colorHex,
+                color: colorHex,
                 borderRadius:
                   borderStyle === BorderStyles.SQUARE
                     ? "0px"
@@ -478,9 +501,9 @@ export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
               }}
             >
               {skill}
-            </Badge>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </>
   );
@@ -490,6 +513,7 @@ export function SkillsSection({ resumeData, currentStep }: ResumeSectionProps) {
 export function ReferenceSection({
   resumeData,
   currentStep,
+  showHrline = false,
 }: ResumeSectionProps) {
   const { references, colorHex } = resumeData;
   const [showIndicator, setShowIndicator] = useState(false);
@@ -513,6 +537,7 @@ export function ReferenceSection({
         className="border-1"
         style={{
           borderColor: colorHex,
+          display: showHrline ? "none" : "block",
         }}
       />
       <div

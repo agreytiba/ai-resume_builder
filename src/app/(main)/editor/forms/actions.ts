@@ -2,8 +2,6 @@
 
 // import openai from "@/lib/openai";
 import groq from "@/lib/openai";
-import { canUseAITools } from "@/lib/permissions";
-import { getUserSubscriptionLevel } from "@/lib/subscription";
 import {
   GenerateSummaryInput,
   generateSummarySchema,
@@ -13,18 +11,12 @@ import {
 } from "@/lib/validation";
 import { auth } from "@clerk/nextjs/server";
 
-//  ai for generating cv summarry
+//  AI CODE FOR GENERATING SUMMARY
 export async function generateSummary(input: GenerateSummaryInput) {
   const { userId } = await auth();
 
   if (!userId) {
     throw new Error("Unauthorized");
-  }
-
-  const subscriptionLevel = await getUserSubscriptionLevel(userId);
-
-  if (!canUseAITools(subscriptionLevel)) {
-    throw new Error("Upgrade your subscription to use this feature");
   }
 
   const { jobTitle, workExperiences, educations, skills } =
@@ -98,7 +90,7 @@ export async function generateSummary(input: GenerateSummaryInput) {
   return aiResponse;
 }
 
-//  ai to create work expriences
+//  AI FOR CREATE THE WORK EXPERIENCE
 export async function generateWorkExperience(
   input: GenerateWorkExperienceInput,
 ) {
@@ -106,12 +98,6 @@ export async function generateWorkExperience(
 
   if (!userId) {
     throw new Error("Unauthorized");
-  }
-
-  const subscriptionLevel = await getUserSubscriptionLevel(userId);
-
-  if (!canUseAITools(subscriptionLevel)) {
-    throw new Error("Upgrade your subscription to use this feature");
   }
 
   const { description } = generateWorkExperienceSchema.parse(input);

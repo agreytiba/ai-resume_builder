@@ -26,12 +26,20 @@ export default function ResumePreviewTemplate1({
       <div className="col-span-4 space-y-4">
         <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
         <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
-        <SkillsSection resumeData={resumeData} currentStep={currentStep} />
+        <SkillsSection
+          resumeData={resumeData}
+          currentStep={currentStep}
+          listAlignment="column"
+        />
       </div>
 
       {/* Right Column */}
       <div className="col-span-8 space-y-6">
-        <SummarySection resumeData={resumeData} currentStep={currentStep} />
+        <SummarySection
+          resumeData={resumeData}
+          currentStep={currentStep}
+          showHrline={true}
+        />
         <WorkExperienceSection
           resumeData={resumeData}
           currentStep={currentStep}

@@ -15,19 +15,17 @@ export default function ResumePreviewTemplate4({
 }: ResumePreviewProps) {
   return (
     <div className="space-y-4 p-6">
-      <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
+      <div className="text-center">
+        <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
+      </div>
       <SummarySection resumeData={resumeData} currentStep={currentStep} />
-      <hr />
       <WorkExperienceSection
         resumeData={resumeData}
         currentStep={currentStep}
       />
-      <hr />
       <EducationSection resumeData={resumeData} currentStep={currentStep} />
-      <hr />
       <SkillsSection resumeData={resumeData} currentStep={currentStep} />
       <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
-      <hr />
       <ReferenceSection resumeData={resumeData} currentStep={currentStep} />
     </div>
   );

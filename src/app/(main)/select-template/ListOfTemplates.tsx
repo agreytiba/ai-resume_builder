@@ -20,6 +20,7 @@ export default async function ListOfTemplates() {
         <DisplayTemplate template={6} />
         <DisplayTemplate template={7} />
         <DisplayTemplate template={8} />
+        <DisplayTemplate template={9} />
       </div>
     </main>
   );

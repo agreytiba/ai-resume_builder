@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { getUserSubscriptionLevel } from "@/lib/subscription";
 import { resumeDataInclude } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
@@ -32,7 +31,6 @@ export default async function Page() {
         userId,
       },
     }),
-    getUserSubscriptionLevel(userId),
   ]);
 
   return (

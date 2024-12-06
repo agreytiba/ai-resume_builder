@@ -17,8 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import usePremiumModal from "@/hooks/usePremiumModal";
-import { canUseAITools } from "@/lib/permissions";
 import {
   GenerateWorkExperienceInput,
   generateWorkExperienceSchema,
@@ -28,7 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { WandSparklesIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
+
 import { generateWorkExperience } from "./actions";
 
 interface GenerateWorkExperienceButtonProps {
@@ -38,10 +36,6 @@ interface GenerateWorkExperienceButtonProps {
 export default function GenerateWorkExperienceButton({
   onWorkExperienceGenerated,
 }: GenerateWorkExperienceButtonProps) {
-  const subscriptionLevel = useSubscriptionLevel();
-
-  const premiumModal = usePremiumModal();
-
   const [showInputDialog, setShowInputDialog] = useState(false);
 
   return (
@@ -50,10 +44,6 @@ export default function GenerateWorkExperienceButton({
         variant="outline"
         type="button"
         onClick={() => {
-          if (!canUseAITools(subscriptionLevel)) {
-            premiumModal.setOpen(true);
-            return;
-          }
           setShowInputDialog(true);
         }}
       >

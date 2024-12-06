@@ -7,7 +7,6 @@ import ResumeEditor from "./ResumeEditor";
 interface PageProps {
   searchParams: Promise<{
     resumeId?: string;
-    template: number | 1;
   }>;
 }
 

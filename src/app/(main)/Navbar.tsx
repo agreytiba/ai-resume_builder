@@ -2,6 +2,7 @@
 
 import logo from "@/assets/logo.png";
 import ThemeToggle from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { CreditCard } from "lucide-react";
@@ -14,7 +15,7 @@ export default function Navbar() {
 
   return (
     <header className="shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 p-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 bg-gray-100 p-3">
         <Link href="/resumes" className="flex items-center gap-2">
           <Image
             src={logo}
@@ -28,6 +29,12 @@ export default function Navbar() {
           </span>
         </Link>
         <div className="flex items-center gap-3">
+          <Button asChild className="hover:bg-gray-400">
+            <Link href="/resumes" className="text-sm font-bold text-black">
+              {" "}
+              Dashboard
+            </Link>
+          </Button>
           <ThemeToggle />
           <UserButton
             appearance={{

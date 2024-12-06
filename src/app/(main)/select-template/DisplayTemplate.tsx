@@ -7,12 +7,12 @@ import { ResumeValues } from "@/lib/validation";
 import { formatDate } from "date-fns";
 
 import { Badge } from "@/components//ui/badge";
-import TemplateSelector from "@/components/TemplateSelector";
 import useDimensions from "@/hooks/useDimensions";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import ContentLoader from "@/components/ContentLoader";
+import DisplayTemplateSelector from "./DisplayTemplateSelector";
 
 interface DisplayTemplateProps {
   template: number;
@@ -41,14 +41,14 @@ export default function DisplayTemplate({
   return (
     <div
       className={cn(
-        "border-1 aspect-[210/297] h-fit w-full cursor-pointer rounded-lg p-2 text-black shadow-md transition duration-200 hover:bg-gray-400 hover:shadow-lg",
+        "border-1 hover: aspect-[210/297] h-fit w-full cursor-pointer rounded-lg bg-[#faf8ff] p-2 text-black shadow-md transition duration-200 hover:bg-gray-500 hover:shadow-lg",
       )}
       onClick={handleClick}
       ref={containerRef}
     >
       <div>
         <div
-          className={cn("space-y-6 p-6", !width && "invisible")}
+          className={cn("space-y-6", !width && "invisible")}
           style={{
             zoom: (1 / 794) * width,
           }}
@@ -59,7 +59,10 @@ export default function DisplayTemplate({
             className={cn("aspect-[210/297] h-fit w-full bg-white text-black")}
           >
             <div className={cn("space-y-6 p-6")} id="resumePreviewContent">
-              <TemplateSelector resumeData={resumeData} template={template} />
+              <DisplayTemplateSelector
+                resumeData={resumeData}
+                template={template}
+              />
             </div>
           </div>
         </div>

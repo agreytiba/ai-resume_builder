@@ -1,12 +1,13 @@
 import {
-  EducationSection,
-  LanguagesSection,
   PersonalInfoHeader,
-  ReferenceSection,
-  SkillsSection,
   SummarySection,
+  LanguagesSection,
+  SkillsSection,
+  ReferenceSection,
   WorkExperienceSection,
+  EducationSection,
 } from "@/components/ResumePreview";
+
 import { ResumeValues } from "@/lib/validation";
 
 interface ResumePreviewProps {
@@ -16,31 +17,31 @@ interface ResumePreviewProps {
   currentStep?: string;
 }
 
-export default function ResumePreviewTemplate5({
+export default function ResumePreviewTemplate6({
   resumeData,
   currentStep,
 }: ResumePreviewProps) {
   return (
-    <div className="grid grid-cols-12 gap-6 p-6">
-      {/* Left Column */}
-      <div className="col-span-4 space-y-4 rounded-lg bg-gray-100 p-4">
+    <div className="space-y-6 p-2">
+      <div className="flex items-start gap-6 bg-blue-400 pt-4">
         <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
-        <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
-        <SkillsSection
-          resumeData={resumeData}
-          currentStep={currentStep}
-          listAlignment="column"
-        />
+        <SummarySection resumeData={resumeData} currentStep={currentStep} />
       </div>
 
-      {/* Right Column */}
-      <div className="col-span-8 space-y-6">
-        <SummarySection resumeData={resumeData} currentStep={currentStep} />
+      <div className="space-y-4">
         <WorkExperienceSection
           resumeData={resumeData}
           currentStep={currentStep}
         />
         <EducationSection resumeData={resumeData} currentStep={currentStep} />
+      </div>
+
+      <div className="flex items-center justify-between space-y-4">
+        <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
+        <SkillsSection resumeData={resumeData} currentStep={currentStep} />
+      </div>
+
+      <div className="space-y-4">
         <ReferenceSection resumeData={resumeData} currentStep={currentStep} />
       </div>
     </div>

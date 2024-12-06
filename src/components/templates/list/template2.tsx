@@ -27,7 +27,6 @@ export default function ResumePreviewTemplate2({
         <PersonalInfoHeader resumeData={resumeData} currentStep={currentStep} />
         <SummarySection resumeData={resumeData} currentStep={currentStep} />
       </div>
-      <hr />
 
       <div className="space-y-4">
         <WorkExperienceSection
@@ -36,12 +35,12 @@ export default function ResumePreviewTemplate2({
         />
         <EducationSection resumeData={resumeData} currentStep={currentStep} />
       </div>
-      <hr />
-      <div className="flex items-center justify-between space-y-4">
+      <hr className="border-1" />
+      <div className="flex w-full items-center justify-between space-y-4">
         <LanguagesSection resumeData={resumeData} currentStep={currentStep} />
         <SkillsSection resumeData={resumeData} currentStep={currentStep} />
       </div>
-      <hr />
+
       <div className="space-y-4">
         <ReferenceSection resumeData={resumeData} currentStep={currentStep} />
       </div>
