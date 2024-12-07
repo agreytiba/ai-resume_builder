@@ -5,19 +5,9 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import resumePreview from "@/assets/sample.jpg";
 import logo from "@/assets/LOGO.jpg";
-import CvTemplate from "@/public/assets/agrey.jpeg";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@clerk/nextjs";
+import CvTemplate from "@/assets/steps.jpg";
 
 export default function Page() {
-  const { isLoaded, isSignedIn } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      router.push("/resumes"); // Redirect to the dashboard page
-    }
-  }, [isLoaded, isSignedIn, router]);
   useEffect(() => {
     // Smooth scroll animations on mount
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -190,12 +180,13 @@ export default function Page() {
           {/* Left: Image */}
           <motion.div
             variants={slideInRight}
-            className="flex flex-col space-y-6"
+            className="flex flex-col space-y-6 sm:hidden md:block lg:block"
           >
             <Image
               src={CvTemplate} // Replace with your actual image path
               alt="CV Builder Interface"
               className="rounded-lg shadow-lg"
+              height={550}
             />
           </motion.div>
 
