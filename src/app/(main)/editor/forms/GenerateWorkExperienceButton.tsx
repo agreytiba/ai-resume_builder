@@ -86,6 +86,10 @@ function InputDialog({
     try {
       const response = await generateWorkExperience(input);
       onWorkExperienceGenerated(response);
+      toast({
+        // variant: "success",
+        description: "Work experience generated successfully!",
+      });
     } catch (error) {
       console.error(error);
       toast({
@@ -98,35 +102,59 @@ function InputDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Generate work experience</DialogTitle>
+        <DialogHeader className="space-y-6">
+          <DialogTitle className="text-center text-lg">
+            Generate Work Experience Entry
+          </DialogTitle>
           <DialogDescription>
-            Describe this work experience and the AI will generate an optimized
-            entry for you.
+            <p className="text-yellow-500">Example:</p>
+            <p>
+              From 2019 to 2020, I worked at Google as a Software Engineer. My
+              tasks included developing web applications, collaborating with
+              team members, and improving system performance
+            </p>
           </DialogDescription>
         </DialogHeader>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            {/* Description Field with Instructions */}
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Work Experience Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...field}
-                      placeholder={`E.g. "from nov 2019 to dec 2020 I worked at google as a software engineer, my tasks were: ..."`}
-                      autoFocus
-                    />
+                    <Textarea {...field} autoFocus />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <LoadingButton type="submit" loading={form.formState.isSubmitting}>
-              Generate
+
+            {/* Button with Clear Instructions */}
+            <LoadingButton
+              type="submit"
+              loading={form.formState.isSubmitting}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Generate Entry
             </LoadingButton>
+
+            {/* Additional Help for Users */}
+            <div className="mt-2 space-y-4 text-sm text-muted-foreground">
+              <p className="text-yellow-500">Tips:</p>
+              <p>1. AI can understand just typing important information</p>
+              <p>
+                2.Be as descriptive as possible about your role,
+                responsibilities, and achievements.
+              </p>
+              <p>
+                3 Mention the company name, your job title, tasks you handled,
+                and the impact you made.
+              </p>
+            </div>
           </form>
         </Form>
       </DialogContent>

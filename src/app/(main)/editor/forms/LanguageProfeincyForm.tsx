@@ -43,10 +43,12 @@ export default function LangaugesForm({
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
-      <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Languages Profiency</h2>
+      <div className="space-y-1.5">
+        <h2 className="text-center text-2xl font-semibold">
+          Languages Proficiency
+        </h2>
         <p className="text-sm text-muted-foreground">
-          Describe the languages you can speak?
+          add languages you can speak or understand.
         </p>
       </div>
       <Form {...form}>
@@ -56,24 +58,43 @@ export default function LangaugesForm({
             name="languages"
             render={({ field }) => (
               <FormItem>
+                {/* Hidden label for better accessibility */}
                 <FormLabel className="sr-only">Languages proficiency</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
-                    placeholder="e.g. Swahili,English, ..."
+                    placeholder={`Example: "Swahili, English, Spanish"`}
                     onChange={(e) => {
                       const languages = e.target.value.split(",");
                       field.onChange(languages);
                     }}
+                    autoFocus
                   />
                 </FormControl>
-                <FormDescription>
-                  Separate each language with a comma.
+                {/* Helpful description */}
+                <FormDescription className="">
+                  Separate each language you know with a comma{" "}
+                  <span className="text-yellow-500">
+                    {" "}
+                    E.g., Swahili, English, Spanish.
+                  </span>
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {/* Additional Tip for Clarity */}
+          <div className="mt-2 space-y-2 text-sm text-muted-foreground">
+            <p className="text-yellow-500">Tips</p>
+            <p>
+              1 List all languages you can speak or understand, even if
+              you&apos;re not fluent in all of them.
+            </p>
+            <p>
+              2 Example: &quot;Swahili, English, Spanish&quot; or &quot;French
+              (basic knowledge)&quot;.
+            </p>
+          </div>
         </form>
       </Form>
     </div>

@@ -1,4 +1,3 @@
-// import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -40,61 +39,29 @@ export default function PersonalInfoForm({
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
 
-  // const photoInputRef = useRef<HTMLInputElement>(null);
-
   return (
     <div className="mx-auto max-w-xl space-y-6">
+      {/* Header Section */}
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Personal info</h2>
-        <p className="text-sm text-muted-foreground">Tell us about yourself.</p>
+        <h2 className="text-2xl font-semibold">Personal Information</h2>
+        <p className="text-sm text-muted-foreground">
+          Please fill out this form with your basic details. It&apos;s simple
+          and won&apos;t take more than a minute!
+        </p>
       </div>
+      {/* The Form */}
       <Form {...form}>
-        <form className="space-y-3">
-          {/* <FormField
-            control={form.control}
-            name="photo"
-            render={({ field: { value, ...fieldValues } }) => (
-              <FormItem>
-                <FormLabel>Your photo</FormLabel>
-                <div className="flex items-center gap-2">
-                  <FormControl>
-                    <Input
-                      {...fieldValues}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        fieldValues.onChange(file);
-                      }}
-                      ref={photoInputRef}
-                    />
-                  </FormControl>
-                  <Button
-                    variant="secondary"
-                    type="button"
-                    onClick={() => {
-                      fieldValues.onChange(null);
-                      if (photoInputRef.current) {
-                        photoInputRef.current.value = "";
-                      }
-                    }}
-                  >
-                    Remove
-                  </Button>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-          <div className="grid grid-cols-2 gap-3">
+        <form className="space-y-4">
+          {/* First and Last Name */}
+          <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First name</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="e.g., John" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,29 +72,33 @@ export default function PersonalInfoForm({
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last name</FormLabel>
+                  <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="e.g., Doe" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+
+          {/* Job Title */}
           <FormField
             control={form.control}
             name="jobTitle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Job title</FormLabel>
+                <FormLabel>Job Title</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} placeholder="e.g., Teacher, Developer" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-3">
+
+          {/* City & Country */}
+          <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="city"
@@ -135,7 +106,7 @@ export default function PersonalInfoForm({
                 <FormItem>
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="e.g., New York" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -148,34 +119,42 @@ export default function PersonalInfoForm({
                 <FormItem>
                   <FormLabel>Country</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="e.g., USA" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+
+          {/* Phone Number */}
           <FormField
             control={form.control}
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone</FormLabel>
+                <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input {...field} type="tel" />
+                  <Input {...field} type="tel" placeholder="e.g. +1234567890" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          {/* Email */}
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                  <Input {...field} type="email" />
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="e.g., example@email.com"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -7,10 +7,12 @@ import resumePreview from "@/assets/sample.jpg";
 import logo from "@/assets/LOGO.jpg";
 import CvTemplate from "@/public/assets/agrey.jpeg";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@clerk/nextjs";
 
-export default function Page() {
-  const { isLoaded, isSignedIn } = useAuth();
+interface HomePageProps {
+  isLoaded: boolean;
+  isSignedIn: boolean | undefined;
+}
+export default function Page({ isLoaded, isSignedIn }: HomePageProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -112,12 +114,12 @@ export default function Page() {
           initial="hidden"
           animate="visible"
           variants={slideInRight}
-          className="h-full flex-1"
+          className="ro flex-1"
         >
           <Image
             src={resumePreview}
             alt="AI Resume Preview"
-            width={400}
+            width={350}
             height={350}
             className="mx-auto rounded-lg shadow-lg"
             style={{

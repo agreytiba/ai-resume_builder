@@ -82,10 +82,15 @@ export default function ReferenceForm({
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
+      {/* Section Title with Instructions */}
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Reference</h2>
+        <h2 className="text-2xl font-semibold">References</h2>
         <p className="text-sm text-muted-foreground">
-          Add reference people to validate as your skills and experience.
+          Add professional references to validate your skills and experience.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          A reference is a person (like a manager or colleague) who can verify
+          your skills, experience, or achievements.
         </p>
       </div>
       <Form {...form}>
@@ -101,7 +106,7 @@ export default function ReferenceForm({
               strategy={verticalListSortingStrategy}
             >
               {fields.map((field, index) => (
-                <EducationItem
+                <ReferenceItem
                   id={field.id}
                   key={field.id}
                   index={index}
@@ -112,6 +117,7 @@ export default function ReferenceForm({
             </SortableContext>
           </DndContext>
           <div className="flex justify-center">
+            {/* Add Reference Button */}
             <Button
               type="button"
               onClick={() =>
@@ -127,7 +133,7 @@ export default function ReferenceForm({
                 })
               }
             >
-              Add reference person
+              Add Reference
             </Button>
           </div>
         </form>
@@ -143,7 +149,7 @@ interface ReferenceItemProps {
   remove: (index: number) => void;
 }
 
-function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
+function ReferenceItem({ id, form, index, remove }: ReferenceItemProps) {
   const {
     attributes,
     listeners,
@@ -165,6 +171,7 @@ function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
         transition,
       }}
     >
+      {/* Reference Header with Drag Handle */}
       <div className="flex justify-between gap-2">
         <span className="font-semibold">Reference {index + 1}</span>
         <GripHorizontal
@@ -205,7 +212,7 @@ function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
           name={`references.${index}.referenceJobTitle`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Job title</FormLabel>
+              <FormLabel>Job Title</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -227,40 +234,12 @@ function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
           )}
         />
       </div>
-      <div className="grid grid-cols-2 gap-3">
-        <FormField
-          control={form.control}
-          name={`references.${index}.referenceEmail`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>email</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={`references.${index}.referencePhone`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contact Number</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
       <FormField
         control={form.control}
-        name={`references.${index}.referenceDescription`}
+        name={`references.${index}.referenceEmail`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Descriptions (optional)</FormLabel>
+            <FormLabel>Email</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -270,10 +249,10 @@ function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
       />
       <FormField
         control={form.control}
-        name={`references.${index}.referenceAddress`}
+        name={`references.${index}.referencePhone`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Company address (optional)</FormLabel>
+            <FormLabel>Phone Number</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -282,7 +261,7 @@ function EducationItem({ id, form, index, remove }: ReferenceItemProps) {
         )}
       />
       <Button variant="destructive" type="button" onClick={() => remove(index)}>
-        Remove
+        Remove Reference
       </Button>
     </div>
   );

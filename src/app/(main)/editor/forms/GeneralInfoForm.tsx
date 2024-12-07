@@ -42,21 +42,30 @@ export default function GeneralInfoForm({
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">General info</h2>
+        <h2 className="text-2xl font-semibold">General Information</h2>
         <p className="text-sm text-muted-foreground">
-          This will not appear on your resume.
+          Fill out the information below to customize your resume. This
+          information will not be visible on your final resume.
         </p>
       </div>
       <Form {...form}>
-        <form className="space-y-3">
+        <div className="space-y-4">
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>please write cv name (optional)</FormLabel>
+                <FormLabel>Resume Name</FormLabel>
+                <FormDescription>
+                  Give your resume a unique name to help you identify it later.
+                  For example: <em>&quot;Job Application 2024&quot;</em>.
+                </FormDescription>
                 <FormControl>
-                  <Input {...field} placeholder="my cv" autoFocus />
+                  <Input
+                    {...field}
+                    placeholder="e.g., My Dream Job Resume"
+                    autoFocus
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,20 +76,27 @@ export default function GeneralInfoForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
-
+                <FormLabel>Purpose of the Resume</FormLabel>
                 <FormDescription>
-                  Describe what this resume is for. (optional)
+                  Briefly describe what this resume is for. For example:{" "}
+                  <em>&quot;Applying for a software developer role.&quot;</em>
                 </FormDescription>
                 <FormControl>
-                  <Input {...field} placeholder="A resume for my next job" />
+                  <Input
+                    {...field}
+                    placeholder="e.g., Resume for my next job in software development"
+                  />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
-        </form>
+          <div className="text-center">
+            <button type="button" className="btn btn-primary">
+              Click The &quot;NEXT STEP&quot; to continue
+            </button>
+          </div>
+        </div>
       </Form>
     </div>
   );

@@ -49,11 +49,13 @@ export default function EducationForm({
     const { unsubscribe } = form.watch(async (values) => {
       const isValid = await form.trigger();
       if (!isValid) return;
+
       setResumeData({
         ...resumeData,
         educations: values.educations?.filter((edu) => edu !== undefined) || [],
       });
     });
+
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
 
@@ -83,9 +85,10 @@ export default function EducationForm({
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div className="space-y-1.5 text-center">
-        <h2 className="text-2xl font-semibold">Education</h2>
+        <h2 className="text-2xl font-semibold">Education Details</h2>
         <p className="text-sm text-muted-foreground">
-          Add as many educations as you like.
+          Use the section below to add and organize your educational history.
+          Drag and drop to reorder them as needed.
         </p>
       </div>
       <Form {...form}>
@@ -123,7 +126,7 @@ export default function EducationForm({
                 })
               }
             >
-              Add education
+              + Add New Education
             </Button>
           </div>
         </form>
@@ -161,22 +164,26 @@ function EducationItem({ id, form, index, remove }: EducationItemProps) {
         transition,
       }}
     >
-      <div className="flex justify-between gap-2">
-        <span className="font-semibold">Education {index + 1}</span>
-        <GripHorizontal
-          className="size-5 cursor-grab text-muted-foreground focus:outline-none"
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-sm font-semibold">Education {index + 1}</span>
+        <div
+          className="cursor-pointer text-sm text-muted-foreground focus:outline-none"
           {...attributes}
           {...listeners}
-        />
+        >
+          <GripHorizontal className="size-5" />
+        </div>
       </div>
       <FormField
         control={form.control}
         name={`educations.${index}.degree`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Degree</FormLabel>
+            <FormLabel>
+              Degree (e.g., Bachelor&apos;s in Computer Science)
+            </FormLabel>
             <FormControl>
-              <Input {...field} autoFocus />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -187,7 +194,7 @@ function EducationItem({ id, form, index, remove }: EducationItemProps) {
         name={`educations.${index}.school`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>School</FormLabel>
+            <FormLabel>School/University Name</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -195,19 +202,15 @@ function EducationItem({ id, form, index, remove }: EducationItemProps) {
           </FormItem>
         )}
       />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         <FormField
           control={form.control}
           name={`educations.${index}.startDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Start date</FormLabel>
+              <FormLabel>Start Date</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  type="date"
-                  value={field.value?.slice(0, 10)}
-                />
+                <Input {...field} type="date" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -218,13 +221,9 @@ function EducationItem({ id, form, index, remove }: EducationItemProps) {
           name={`educations.${index}.endDate`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>End date</FormLabel>
+              <FormLabel>End Date</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  type="date"
-                  value={field.value?.slice(0, 10)}
-                />
+                <Input {...field} type="date" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -232,7 +231,7 @@ function EducationItem({ id, form, index, remove }: EducationItemProps) {
         />
       </div>
       <Button variant="destructive" type="button" onClick={() => remove(index)}>
-        Remove
+        Remove Education
       </Button>
     </div>
   );

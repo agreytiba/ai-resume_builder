@@ -1,11 +1,7 @@
 import qs from "qs";
 import axios from "axios";
 import { string, number, email } from "fast-web-kit";
-import {
-  PaymentOptionsType,
-  RequestResponseType,
-  ZenoPayOptionsType,
-} from "./validation";
+import { PaymentOptionsType, RequestResponseType } from "./validation";
 
 const BASE_URL = "https://api.zeno.africa";
 
@@ -56,12 +52,9 @@ export const postRequest = async (
  * @param paymentOptions - Details of the payment including customer info and amount.
  * @returns A promise resolving to the payment API response.
  */
-export const pay = async (
-  options: ZenoPayOptionsType,
+export const Pay = async (
   paymentOptions: PaymentOptionsType,
 ): Promise<RequestResponseType> => {
-  const { apiKey, secretKey, accountID } = options;
-
   if (string.isEmpty(paymentOptions.customerName)) {
     return { success: false, message: "Customer name is required" };
   }
@@ -101,9 +94,6 @@ export const pay = async (
 
   const requestData = {
     create_order: 1,
-    api_key: apiKey,
-    account_id: accountID,
-    secret_key: secretKey,
     amount: paymentOptions.amountToCharge,
     buyer_name: paymentOptions.customerName,
     buyer_email: paymentOptions.customerEmail,
@@ -120,7 +110,6 @@ export const pay = async (
  * @returns A promise resolving to the payment status API response.
  */
 export const checkPaymentStatus = async (
-  options: ZenoPayOptionsType,
   orderID: string,
 ): Promise<RequestResponseType> => {
   if (string.isEmpty(orderID)) {
