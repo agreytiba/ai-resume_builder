@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { FileUserIcon, Loader2, PenLineIcon } from "lucide-react";
-import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { steps } from "./steps";
 
 interface FooterProps {
@@ -55,19 +54,24 @@ export default function Footer({
           variant="outline"
           size="icon"
           onClick={() => setShowSmResumePreview(!showSmResumePreview)}
-          className="md:hidden"
+          className="w-42 md:hidden"
           title={
             showSmResumePreview ? "Show input form" : "Show resume preview"
           }
         >
-          {showSmResumePreview ? <PenLineIcon /> : <FileUserIcon />}
+          {showSmResumePreview ? (
+            <span className="rounded bg-yellow-500 p-2 text-white">
+              SHOW FORMS
+            </span>
+          ) : (
+            <span className="rounded bg-green-500 p-2">VIEW CV</span>
+          )}
         </Button>
         <div className="flex items-center gap-3">
-          <Button className="bg-[#fa4639]" asChild>
-            <Link className="bg-[#fa4639]" href="/resumes">
-              Close
-            </Link>
-          </Button>
+          {currentStep === "reference" && (
+            <Button className="bg-black">Download</Button>
+          )}
+
           <div
             className={cn(
               "text-black opacity-0",

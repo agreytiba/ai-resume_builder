@@ -81,7 +81,6 @@ export default function ResumeEditor({ resumeToEdit }: ResumeEditorProps) {
         showSmResumePreview={showSmResumePreview}
         setShowSmResumePreview={setShowSmResumePreview}
         isSaving={isSaving}
-        title={resumeData.title}
       />
     </div>
   );
