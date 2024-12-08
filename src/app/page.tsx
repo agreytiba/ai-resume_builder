@@ -6,17 +6,17 @@ import { motion } from "framer-motion";
 import resumePreview from "@/assets/sample.jpg";
 import logo from "@/assets/LOGO.jpg";
 import CvTemplate from "@/assets/steps.jpg";
-  // import { useRouter } from "next/navigation";
-  // import { useAuth } from "@clerk/nextjs";
+  import { useRouter } from "next/navigation";
+  import { useAuth } from "@clerk/nextjs";
   export default function Page() {
-    // const { isSignedIn } = useAuth();
-    // const router = useRouter();
+    const { isSignedIn } = useAuth();
+    const router = useRouter();
 
-    // useEffect(() => {
-    //   if (isSignedIn) {
-    //     router.push("/resumes");
-    //   }
-    // }, [isSignedIn, router]);
+    useEffect(() => {
+      if (isSignedIn) {
+        router.push("/resumes");
+      }
+    }, [isSignedIn, router]);
     useEffect(() => {
       // Smooth scroll animations on mount
       window.scrollTo({ top: 0, behavior: "smooth" });
