@@ -21,21 +21,26 @@ const isPublicRoute = createRouteMatcher([
 
 export default clerkMiddleware(
   async (auth, request: AuthenticatedNextRequest) => {
+    const { isSignedIn } = request.auth || {};
+
     // Protect private routes
     if (!isPublicRoute(request)) {
       await auth.protect();
     }
 
-    const { isSignedIn } = request.auth || {};
-
     // Redirect logic based on authentication status
     if (request.nextUrl.pathname === "/") {
       if (isSignedIn) {
-        // Redirect logged-in users to `/resumes`
+        // Redirect logged-in users to `/dashboard`
         return NextResponse.redirect(new URL("/resumes", request.url));
       }
       // Otherwise, allow access to `/`
       return NextResponse.next();
+    }
+
+    // Redirect signed-in users from public routes to `/dashboard`
+    if (isSignedIn && isPublicRoute(request)) {
+      return NextResponse.redirect(new URL("/resumes", request.url));
     }
 
     return NextResponse.next();
