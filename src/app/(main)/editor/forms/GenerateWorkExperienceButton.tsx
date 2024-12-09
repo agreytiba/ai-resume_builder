@@ -48,7 +48,7 @@ export default function GenerateWorkExperienceButton({
         }}
       >
         <WandSparklesIcon className="size-4" />
-        Smart fill (AI)
+        Generate using AI
       </Button>
       <InputDialog
         open={showInputDialog}

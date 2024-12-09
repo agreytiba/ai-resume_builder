@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { steps } from "./steps";
-
+import { ResumeValues } from "@/lib/validation";
+import { useRouter } from "next/navigation"; // Import router if using Next.js
 interface FooterProps {
   title?: string;
   currentStep: string;
@@ -10,6 +11,7 @@ interface FooterProps {
   showSmResumePreview: boolean;
   setShowSmResumePreview: (show: boolean) => void;
   isSaving: boolean;
+  resumeData: ResumeValues;
 }
 
 export default function Footer({
@@ -18,7 +20,10 @@ export default function Footer({
   showSmResumePreview,
   setShowSmResumePreview,
   isSaving,
+  resumeData,
 }: FooterProps) {
+  const router = useRouter();
+  console.log(resumeData);
   const previousStep = steps.find(
     (_, index) => steps[index + 1]?.key === currentStep,
   )?.key;
@@ -27,7 +32,11 @@ export default function Footer({
     (_, index) => steps[index - 1]?.key === currentStep,
   )?.key;
 
-  // function to handle download
+  const handleDownload = () => {
+    const serializedData = JSON.stringify(resumeData); // Serialize data safely
+    router.push(`/download?data=${encodeURIComponent(serializedData)}`); // Use string path with encoded query
+  };
+
   return (
     <footer className="w-full border-t bg-gray-100 px-3 py-3">
       <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3">
@@ -68,9 +77,11 @@ export default function Footer({
           )}
         </Button>
         <div className="flex items-center gap-3">
-          {currentStep === "reference" && (
-            <Button className="bg-black">Download</Button>
-          )}
+          {/* {currentStep === "reference" && ( */}
+          <Button className="bg-black" onClick={handleDownload}>
+            Download
+          </Button>
+          {/* )} */}
 
           <div
             className={cn(
@@ -88,3 +99,5 @@ export default function Footer({
     </footer>
   );
 }
+
+

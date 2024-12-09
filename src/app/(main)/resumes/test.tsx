@@ -1,5 +1,6 @@
 "use client";
 
+// import LoadingButton from "@/components/LoadingButton";
 import ResumePreview from "@/components/ResumePreview";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -7,18 +8,10 @@ import { ResumeServerData } from "@/lib/types";
 import { mapToResumeValues } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import { Printer, Trash2, Edit3 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { deleteResume } from "./actions";
 import { useRouter } from "next/navigation";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import ContentLoader from "@/components/ContentLoader";
 
 interface ResumeItemProps {
   resume: ResumeServerData;
@@ -29,17 +22,12 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
-  const [isLoadingPrint, setIsLoadingPrint] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const reactToPrintFn = useReactToPrint({
     contentRef,
     documentTitle: resume.title || "Resume",
   });
 
   const handleDelete = async () => {
-    setIsLoadingDelete(true);
     try {
       await deleteResume(resume.id);
       toast({ title: "Resume deleted successfully" });
@@ -47,21 +35,6 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
     } catch (error) {
       console.log(error as Error);
       toast({ title: "Failed to delete resume", variant: "destructive" });
-    } finally {
-      setIsLoadingDelete(false);
-      setIsDialogOpen(false);
-    }
-  };
-
-  const handlePrint = async () => {
-    setIsLoadingPrint(true);
-    try {
-      reactToPrintFn?.();
-    } catch (error) {
-      console.log(error as Error);
-      toast({ title: "Failed to print resume", variant: "destructive" });
-    } finally {
-      setIsLoadingPrint(false);
     }
   };
 
@@ -74,34 +47,20 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setIsDialogOpen(true)}
+          onClick={handleDelete}
           className="flex items-center space-x-1"
-          disabled={isLoadingDelete}
         >
-          {isLoadingDelete ? (
-            <ContentLoader />
-          ) : (
-            <>
-              <Trash2 className="h-4 w-4" />
-              <span>Delete</span>
-            </>
-          )}
+          <Trash2 className="h-4 w-4" />
+          <span>Delete</span>
         </Button>
         <Button
           variant="ghost"
           size="sm"
-          onClick={handlePrint}
+          onClick={() => reactToPrintFn?.()}
           className="flex items-center space-x-1"
-          disabled={isLoadingPrint}
         >
-          {isLoadingPrint ? (
-            <ContentLoader />
-          ) : (
-            <>
-              <Printer className="h-4 w-4" />
-              <span>Print</span>
-            </>
-          )}
+          <Printer className="h-4 w-4" />
+          <span>Print</span>
         </Button>
         <Button
           variant="ghost"
@@ -137,28 +96,6 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
         </div>
       </div>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirm Delete</DialogTitle>
-          </DialogHeader>
-          <p>This will delete the resume permanently. Are you sure?</p>
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={isLoadingDelete}
-            >
-              {isLoadingDelete ? <span className="loader"></span> : "Delete"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

@@ -179,12 +179,19 @@ function WorkExperienceItem({
           {...listeners}
         />
       </div>
-      <div className="flex justify-center">
-        <GenerateWorkExperienceButton
-          onWorkExperienceGenerated={(exp) =>
-            form.setValue(`workExperiences.${index}`, exp)
-          }
-        />
+      <div className="flex flex-col items-center justify-center">
+        <p className="bg-muted-ground text-gray-500">
+          {" "}
+          click the button below for AI to help you fill the form
+        </p>
+        <br />
+        <div className="w-1/2">
+          <GenerateWorkExperienceButton
+            onWorkExperienceGenerated={(exp) =>
+              form.setValue(`workExperiences.${index}`, exp)
+            }
+          />
+        </div>
       </div>
       <FormField
         control={form.control}

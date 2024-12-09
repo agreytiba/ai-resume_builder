@@ -78,6 +78,7 @@ export default function ResumeEditor({ resumeToEdit }: ResumeEditorProps) {
       <Footer
         currentStep={currentStep}
         setCurrentStep={setStep}
+        resumeData={resumeData}
         showSmResumePreview={showSmResumePreview}
         setShowSmResumePreview={setShowSmResumePreview}
         isSaving={isSaving}

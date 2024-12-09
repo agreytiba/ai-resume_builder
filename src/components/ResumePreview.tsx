@@ -3,7 +3,7 @@ import useDimensions from "@/hooks/useDimensions";
 import { cn } from "@/lib/utils";
 import { ResumeValues } from "@/lib/validation";
 import { formatDate } from "date-fns";
-import Image from "next/image";
+// import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import TemplateSelector from "./TemplateSelector";
 
@@ -67,10 +67,9 @@ interface PersonalInfoHeaderProps extends ResumeSectionProps {
 export function PersonalInfoHeader({
   resumeData,
   currentStep,
-  position = "center", // default alignment is center
+  position = "left", // default alignment is center
 }: PersonalInfoHeaderProps) {
   const {
-    photo,
     firstName,
     lastName,
     jobTitle,
@@ -79,10 +78,9 @@ export function PersonalInfoHeader({
     phone,
     email,
     colorHex,
-    borderStyle,
   } = resumeData;
 
-  const [photoSrc, setPhotoSrc] = useState(photo instanceof File ? "" : photo);
+  // const [photoSrc, setPhotoSrc] = useState(photo instanceof File ? "" : photo);
   const [showIndicator, setShowIndicator] = useState(false);
 
   // Show indicator based on the current step
@@ -94,52 +92,28 @@ export function PersonalInfoHeader({
   }, [currentStep]);
 
   // Generate photo URL from file
-  useEffect(() => {
-    const objectUrl = photo instanceof File ? URL.createObjectURL(photo) : "";
-    if (objectUrl) setPhotoSrc(objectUrl);
-    if (photo === null) setPhotoSrc("");
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [photo]);
+  // useEffect(() => {
+  //   const objectUrl = photo instanceof File ? URL.createObjectURL(photo) : "";
+  //   if (objectUrl) setPhotoSrc(objectUrl);
+  //   if (photo === null) setPhotoSrc("");
+  //   return () => URL.revokeObjectURL(objectUrl);
+  // }, [photo]);
 
   return (
     <div
-      className={cn(
-        "flex items-center gap-6 p-4",
-        {
-          "justify-start": position === "left",
-          "justify-center": position === "center",
-          "justify-end": position === "right",
-        },
-        showIndicator && "transition-all duration-300",
-      )}
+      className={cn(showIndicator && "transition-all duration-300")}
       style={{
         backgroundColor: showIndicator
           ? "rgba(218, 165, 32, 0.4)"
           : "transparent",
+        textAlign: `${position}`,
       }}
     >
-      {photoSrc && (
-        <Image
-          src={photoSrc}
-          width={100}
-          height={100}
-          alt="Author photo"
-          className="aspect-square object-cover"
-          style={{
-            borderRadius:
-              borderStyle === BorderStyles.SQUARE
-                ? "0px"
-                : borderStyle === BorderStyles.CIRCLE
-                  ? "9999px"
-                  : "10%",
-          }}
-        />
-      )}
-      <div className="space-y-3">
+      <div className="space-y-2">
         {/* Name and Job Title */}
         <div className="space-y-1">
           <p
-            className="text-4xl font-extrabold tracking-tight"
+            className="text-2xl font-semibold tracking-tight"
             style={{
               color: colorHex,
             }}
@@ -157,12 +131,13 @@ export function PersonalInfoHeader({
         </div>
 
         {/* Location and Contact Info */}
-        <p className="text-sm text-gray-600">
+
+        <p>{phone}</p>
+        <p>{email}</p>
+        <p className="text-sm font-normal leading-relaxed text-black">
           {city}
           {city && country ? ", " : ""}
           {country}
-          {(city || country) && (phone || email) ? " • " : ""}
-          {[phone, email].filter(Boolean).join(" • ")}
         </p>
       </div>
     </div>
@@ -518,13 +493,14 @@ export function ReferenceSection({
   const { references, colorHex } = resumeData;
   const [showIndicator, setShowIndicator] = useState(false);
 
-  //  useEffect to check change in currentStep and show indicator
+  // useEffect to check change in currentStep and show indicator
   useEffect(() => {
     if (currentStep === "reference") {
       setShowIndicator(true);
     }
     return () => setShowIndicator(false);
   }, [currentStep]);
+
   const referencesNotEmpty = references?.filter(
     (edu) => Object.values(edu).filter(Boolean).length > 0,
   );
@@ -549,35 +525,65 @@ export function ReferenceSection({
         }}
       >
         <p
-          className="text-xl font-semibold"
+          className="text-lg font-semibold tracking-tight"
           style={{
             color: colorHex,
           }}
         >
           References
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {referencesNotEmpty.map((ref, index) => (
-            <div key={index} className="break-inside-avoid space-y-1">
+            <div key={index} className="break-inside-avoid space-y-2">
+              {/* Name */}
               <div
-                className="flex items-center justify-between text-xl font-semibold"
+                className="text-base font-medium"
                 style={{
                   color: colorHex,
                 }}
               >
-                <span className="text-lg font-semibold">
-                  {ref.referenceFirstName} {ref.referenceLastName}
-                </span>
+                <span>Name</span> : {ref.referenceFirstName}{" "}
+                {ref.referenceLastName}
               </div>
-              <p className="text-lg">
-                {ref.referenceJobTitle} ,
-                <span className="text-lg">{ref.referenceCompanyName}</span>
+
+              {/* Job Title and Company */}
+              <p className="text-sm font-normal">
+                <span className="mr-2 font-semibold">Position :</span>{" "}
+                {ref.referenceJobTitle}
+              </p>
+              <p className="text-sm font-normal">
+                {ref.referenceCompanyName ? (
+                  <>
+                    <span className="mr-2 font-semibold">Company :</span>{" "}
+                    {ref.referenceCompanyName}
+                  </>
+                ) : (
+                  <></>
+                )}
               </p>
 
-              <p className="text-xs">{ref.referenceEmail}</p>
-              <p className="text-xs">{ref.referencePhone}</p>
-              <p className="text-xs">{ref.referenceAddress}</p>
-              <p className="text-xs">{ref.referenceDescription}</p>
+              {/* Contact Info */}
+              <p className="text-sm font-light">
+                <span className="mr-2 font-semibold">E-mail :</span>{" "}
+                {ref.referenceEmail}
+              </p>
+              <p className="text-sm font-light">
+                <span className="mr-2 font-semibold">Phone No :</span>{" "}
+                {ref.referencePhone}
+              </p>
+
+              {/* Address */}
+              {ref.referenceAddress && (
+                <p className="text-sm font-light">
+                  <span className="mr-2 font-semibold">Address :</span>
+                  {ref.referenceAddress}
+                </p>
+              )}
+
+              {/* Description
+              {ref.referenceDescription && (
+                <p className="text-sm font-light">{ref.referenceDescription}</p>
+              )} */}
             </div>
           ))}
         </div>
@@ -585,3 +591,4 @@ export function ReferenceSection({
     </>
   );
 }
+

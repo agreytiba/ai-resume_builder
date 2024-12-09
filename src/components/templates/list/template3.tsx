@@ -19,6 +19,7 @@ export default function ResumePreviewTemplate3({
           resumeData={resumeData}
           currentStep={currentStep}
           showHrline={true}
+          position="center"
         />
       </div>
       <div className="border p-4">
