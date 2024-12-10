@@ -17,7 +17,7 @@ const Page: React.FC = () => {
     ? (JSON.parse(decodeURIComponent(data)) as ResumeValues)
     : null;
 
-  console.log(resumeData);
+
 
   const handleDownload = async () => {
     if (!contentRef.current) return;
@@ -52,7 +52,7 @@ const Page: React.FC = () => {
 
   return (
     <div
-      className="item-center flex justify-center"
+      className="item-center flex aspect-[210/297] h-fit w-full grow justify-center"
       style={{ padding: "0.6cm" }}
     >
       <div style={{ width: "75%" }}>
@@ -74,8 +74,9 @@ const Page: React.FC = () => {
         <div
           style={{
             fontFamily: "'Inter', sans-serif !important",
-            zoom: "1 !important",
+            // zoom: "1 !important",
           }}
+          className="grow"
         >
           <DisplayTemplate template={1} contentRef={contentRef} />
         </div>

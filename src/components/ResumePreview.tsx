@@ -383,7 +383,7 @@ export function LanguagesSection({
           Language proficiency
         </p>
         <ul
-          className={`flex ${
+          className={`ml-4 flex list-disc ${
             listAlignment === "row" ? "flex-row gap-4" : "flex-col gap-2"
           }`}
         >
@@ -458,7 +458,7 @@ export function SkillsSection({
           Skills
         </p>
         <ul
-          className={`flex ${
+          className={`ml-4 flex list-disc ${
             listAlignment === "row" ? "flex-row gap-4" : "flex-col gap-2"
           }`}
         >

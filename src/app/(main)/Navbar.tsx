@@ -1,7 +1,7 @@
 "use client";
 
 import logo from "@/assets/LOGO.jpg";
-import ThemeToggle from "@/components/ThemeToggle";
+// import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
@@ -24,9 +24,6 @@ export default function Navbar() {
             height={80}
             className="rounded"
           />
-          <span className="text-xl font-bold tracking-tight text-yellow-500">
-            AI Resume Builder
-          </span>
         </Link>
         <div className="flex items-center gap-3">
           <Button asChild className="hover:opacity-50">
@@ -37,7 +34,7 @@ export default function Navbar() {
               Dashboard
             </Link>
           </Button>
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           <UserButton
             appearance={{
               baseTheme: theme === "dark" ? dark : undefined,

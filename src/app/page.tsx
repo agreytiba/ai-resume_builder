@@ -379,6 +379,17 @@ import CvTemplate from "@/assets/steps.jpg";
               </button>
             </form>
           </div>
+          <p className="my-6 text-center text-white">
+            {" "}
+            @ Developed by{" "}
+            <a
+              href="https://agreytibamanya.info/"
+              target="_blank"
+              className="pointer text-yellow-500"
+            >
+              Agrey Tibamanya
+            </a>
+          </p>
         </footer>
       </div>
     );

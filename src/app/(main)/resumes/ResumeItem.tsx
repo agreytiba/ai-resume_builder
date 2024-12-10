@@ -66,99 +66,89 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
   };
 
   const wasUpdated = resume.updatedAt !== resume.createdAt;
-
-  return (
-    <div className="group relative rounded-lg border border-transparent bg-secondary p-3 transition-colors hover:border-border">
-      {/* Action Buttons */}
-      <div className="mb-3 flex justify-end space-x-2">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsDialogOpen(true)}
-          className="flex items-center space-x-1"
-          disabled={isLoadingDelete}
-        >
-          {isLoadingDelete ? (
-            <ContentLoader />
-          ) : (
-            <>
-              <Trash2 className="h-4 w-4" />
-              <span>Delete</span>
-            </>
-          )}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handlePrint}
-          className="flex items-center space-x-1"
-          disabled={isLoadingPrint}
-        >
-          {isLoadingPrint ? (
-            <ContentLoader />
-          ) : (
-            <>
-              <Printer className="h-4 w-4" />
-              <span>Print</span>
-            </>
-          )}
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => router.push(`/editor?resumeId=${resume.id}`)}
-          className="flex items-center space-x-1"
-        >
-          <Edit3 className="h-4 w-4" />
-          <span>Edit</span>
-        </Button>
-      </div>
-
-      {/* Resume Content */}
-      <div className="space-y-3">
-        <div className="inline-block w-full text-center">
-          <p className="line-clamp-1 font-semibold">
-            {resume.title || "No title"}
-          </p>
-          {resume.description && (
-            <p className="line-clamp-2 text-sm">{resume.description}</p>
-          )}
-          <p className="text-xs text-muted-foreground">
-            {wasUpdated ? "Updated" : "Created"} on{" "}
-            {formatDate(resume.updatedAt, "MMM d, yyyy h:mm a")}
-          </p>
-        </div>
-        <div className="relative inline-block w-full">
-          <ResumePreview
-            resumeData={mapToResumeValues(resume)}
-            contentRef={contentRef}
-            className="overflow-hidden shadow-sm transition-shadow group-hover:shadow-lg"
-          />
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
-        </div>
-      </div>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirm Delete</DialogTitle>
-          </DialogHeader>
-          <p>This will delete the resume permanently. Are you sure?</p>
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={isLoadingDelete}
-            >
-              {isLoadingDelete ? <span className="loader"></span> : "Delete"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+if (isLoadingDelete) {
+  return <ContentLoader />;
+}
+return (
+  <div className="group relative rounded-lg border border-transparent bg-secondary p-3 transition-colors hover:border-border">
+    {/* Action Buttons */}
+    <div className="mb-3 flex justify-end space-x-2">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setIsDialogOpen(true)}
+        className="flex items-center space-x-1"
+        disabled={isLoadingDelete}
+      >
+        <Trash2 className="h-4 w-4" />
+        <span>Delete</span>
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={handlePrint}
+        className="flex items-center space-x-1 sm:hidden md:block"
+        disabled={isLoadingPrint}
+      >
+        <Printer className="h-4 w-4" />
+        <span>Print</span>
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => router.push(`/editor?resumeId=${resume.id}`)}
+        className="flex items-center space-x-1"
+      >
+        <Edit3 className="h-4 w-4" />
+        <span>Edit</span>
+      </Button>
     </div>
-  );
+
+    {/* Resume Content */}
+    <div className="space-y-3">
+      <div className="inline-block w-full text-center">
+        <p className="line-clamp-1 font-semibold">
+          {resume.title || "No title"}
+        </p>
+        {resume.description && (
+          <p className="line-clamp-2 text-sm">{resume.description}</p>
+        )}
+        <p className="text-xs text-muted-foreground">
+          {wasUpdated ? "Updated" : "Created"} on{" "}
+          {formatDate(resume.updatedAt, "MMM d, yyyy h:mm a")}
+        </p>
+      </div>
+      <div className="relative inline-block w-full">
+        <ResumePreview
+          resumeData={mapToResumeValues(resume)}
+          contentRef={contentRef}
+          className="overflow-hidden shadow-sm transition-shadow group-hover:shadow-lg"
+        />
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
+      </div>
+    </div>
+
+    {/* Delete Confirmation Dialog */}
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Confirm Delete</DialogTitle>
+        </DialogHeader>
+        <p>This will delete the resume permanently. Are you sure?</p>
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isLoadingDelete}
+          >
+            {isLoadingDelete ? <span className="loader"></span> : "Delete"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </div>
+);
 }

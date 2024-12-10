@@ -69,19 +69,17 @@ export default function Footer({
           }
         >
           {showSmResumePreview ? (
-            <span className="rounded bg-yellow-500 p-2 text-white">
-              SHOW FORMS
-            </span>
+            <span className="rounded bg-yellow-500 p-2 text-white">forms</span>
           ) : (
             <span className="rounded bg-green-500 p-2">VIEW CV</span>
           )}
         </Button>
         <div className="flex items-center gap-3">
-          {/* {currentStep === "reference" && ( */}
-          <Button className="bg-black" onClick={handleDownload}>
-            Download
-          </Button>
-          {/* )} */}
+          {currentStep === "reference" && (
+            <Button className="bg-black" onClick={handleDownload}>
+              Download
+            </Button>
+          )}
 
           <div
             className={cn(
