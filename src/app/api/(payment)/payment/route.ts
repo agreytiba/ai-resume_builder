@@ -1,4 +1,6 @@
 import ZenoPay from "@/utils/zenopay";
+import { NextRequest, NextResponse } from "next/server";
+
 // Configure ZenoPay using environment variables
 const zenoPayOptions = {
   accountID: process.env.ZENO_ACCOUNT_ID || "", // Replace with your Zeno account ID
@@ -8,25 +10,22 @@ const zenoPayOptions = {
 
 const zenoPay = new ZenoPay(zenoPayOptions);
 
-export async function POST(req: {
-  json: () =>
-    | PromiseLike<{
-        amountToCharge: string;
-        customerName: string;
-        customerEmail: string;
-        customerPhoneNumber: string;
-      }>
-    | {
-        amountToCharge: string;
-        customerName: string;
-        customerEmail: string;
-        customerPhoneNumber: string;
-      };
-}) {
+// Define a type for the request body
+interface PaymentRequestBody {
+  amountToCharge: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhoneNumber: string;
+}
+
+export async function POST(req: NextRequest) {
   try {
     // Parse the JSON payload
+    const body: PaymentRequestBody = await req.json();
+
+    // Destructure the body
     const { amountToCharge, customerName, customerEmail, customerPhoneNumber } =
-      await req.json();
+      body;
 
     // Ensure amountToCharge is a number
     const paymentOptions = {
@@ -36,15 +35,15 @@ export async function POST(req: {
       customerPhoneNumber,
     };
 
-    // Call the payment logic (replace this with the actual logic)
+    // Call the payment logic
     const result = await zenoPay.Pay(paymentOptions);
 
-    // Send response
-    return new Response(JSON.stringify({ ...result }), { status: 200 });
+    // Send a successful response
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("Payment error:", error);
-    return new Response(
-      JSON.stringify({ message: "Payment processing error" }),
+    return NextResponse.json(
+      { message: "Payment processing error", error },
       { status: 500 },
     );
   }

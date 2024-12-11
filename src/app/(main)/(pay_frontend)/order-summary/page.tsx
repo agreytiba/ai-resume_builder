@@ -11,17 +11,17 @@ export default function Page() {
   const orderId = searchParams.get("orderId");
 
   useEffect(() => {
-    const savedOrderId = localStorage.getItem("orderId");
+    // const savedOrderId = localStorage.getItem("orderId");
 
-    if (orderId && savedOrderId) {
-      if (orderId == savedOrderId) {
-        setIsValid(true);
-        setMessage("Payment Successful");
-        localStorage.removeItem("orderId"); // Remove saved orderId
-      } else {
-        setIsValid(false);
-        setMessage("Invalid Payment");
-      }
+    if (orderId) {
+      // if (orderId) {
+      setIsValid(true);
+      setMessage("Payment Successful");
+      localStorage.removeItem("orderId"); // Remove saved orderId
+      // } else {
+      //   setIsValid(false);
+      //   setMessage("Invalid Payment");
+      // }
     } else {
       setIsValid(false);
       setMessage("Invalid Payment");
