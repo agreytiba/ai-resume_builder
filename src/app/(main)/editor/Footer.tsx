@@ -33,8 +33,7 @@ export default function Footer({
   )?.key;
 
   const handleDownload = () => {
-    const serializedData = JSON.stringify(resumeData); // Serialize data safely
-    router.push(`/download?data=${encodeURIComponent(serializedData)}`); // Use string path with encoded query
+    router.push(`/print?resumeId=${resumeData.id}`); // Use string path with encoded query
   };
 
   return (

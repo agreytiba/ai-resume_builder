@@ -76,6 +76,16 @@ body {
     zoom: 1 !important;
     padding: 0;
   }
+   body.print-active .hidden {
+    display: block !important;
+  }
+  body.print-active .print-hidden {
+    display: none !important;
+  }
+  .resume-preview {
+    width: 100%;
+    box-shadow: none;
+  }
 }
 
 #resumePreviewContent {
