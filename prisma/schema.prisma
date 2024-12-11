@@ -31,12 +31,20 @@ model Resume {
   borderStyle String  @default("squircle")
   summary     String?
   firstName   String?
+  middleName    String?
   lastName    String?
   jobTitle    String?
   city        String?
   country     String?
   phone       String?
   email       String?
+  
+  // properties for download and payment
+  request_order_id String?
+  paid_order_id  String?
+  isDownloaded Boolean @default(false)
+  Payment_status Boolean @default(false)
+  enable_edit Boolean @default(false)
 
   workExperiences WorkExperience[]
   educations      Education[]

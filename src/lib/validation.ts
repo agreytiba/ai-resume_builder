@@ -25,12 +25,18 @@ export const personalInfoSchema = z.object({
       "File must be less than 4MB",
     ),
   firstName: optionalString,
+  middleName: optionalString,
   lastName: optionalString,
   jobTitle: optionalString,
   city: optionalString,
   country: optionalString,
   phone: optionalString,
   email: optionalString,
+  request_order_id: optionalString,
+  paid_order_id: optionalString,
+  isDownloaded: z.boolean(),
+  Payment_status: z.boolean(),
+  enable_edit: z.boolean(),
 });
 
 export type PersonalInfoValues = z.infer<typeof personalInfoSchema>;
