@@ -9,6 +9,11 @@
   "email": "agrey@example.com",
   "colorHex": "#000000",
   "borderStyle": "CIRCLE",
+  "isDownloaded": false,
+  "Payment_status": false,
+  "enable_edit": false,
+  "request_order_id": "dhfg4wera",
+  "paid_order_id": "dh466464",
   "summary": "Enthusiastic software engineer with 5 years of experience in full-stack development.",
   "workExperiences": [
     {

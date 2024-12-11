@@ -48,7 +48,13 @@ export default function ResumePreview({
           resumeData={resumeData}
           currentStep={currentStep}
         /> */}
-        <TemplateSelector resumeData={resumeData} currentStep={currentStep} />
+        <TemplateSelector
+          resumeData={resumeData}
+          currentStep={currentStep}
+          isDownloaded={false}
+          Payment_status={false}
+          enable_edit={false}
+        />
       </div>
     </div>
   );
@@ -71,6 +77,7 @@ export function PersonalInfoHeader({
 }: PersonalInfoHeaderProps) {
   const {
     firstName,
+    middleName,
     lastName,
     jobTitle,
     city,
@@ -111,14 +118,14 @@ export function PersonalInfoHeader({
     >
       <div className="space-y-2">
         {/* Name and Job Title */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <p
             className="text-2xl font-semibold tracking-tight"
             style={{
               color: colorHex,
             }}
           >
-            {firstName} {lastName}
+            {firstName} {middleName} {lastName}
           </p>
           <p
             className="text-lg font-medium tracking-wide"
@@ -133,7 +140,13 @@ export function PersonalInfoHeader({
         {/* Location and Contact Info */}
 
         <p>{phone}</p>
-        <p>{email}</p>
+        <p
+          className="overflow-hidden break-words tracking-tight"
+          title={email} // Tooltip to show full email on hover
+        >
+          {email}
+        </p>
+
         <p className="text-sm font-normal leading-relaxed text-black">
           {city}
           {city && country ? ", " : ""}

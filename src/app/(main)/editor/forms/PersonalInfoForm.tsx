@@ -21,6 +21,7 @@ export default function PersonalInfoForm({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
       firstName: resumeData.firstName || "",
+      middleName: resumeData.middleName || "",
       lastName: resumeData.lastName || "",
       jobTitle: resumeData.jobTitle || "",
       city: resumeData.city || "",
@@ -69,19 +70,31 @@ export default function PersonalInfoForm({
             />
             <FormField
               control={form.control}
-              name="lastName"
+              name="middleName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Middle Name (optional)</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="e.g., Doe" />
+                    <Input {...field} placeholder="e.g., John" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="e.g., Doe" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           {/* Job Title */}
           <FormField
             control={form.control}

@@ -59,24 +59,26 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
   }
 
   return (
-    <div className="group relative rounded-lg border border-transparent bg-secondary p-3 transition-colors hover:border-border">
+    <div className="group relative rounded-lg border border-transparent bg-secondary p-4 transition-colors hover:border-border">
       {/* Action Buttons */}
-      <div className="mb-3 flex justify-end space-x-2">
+      <div className="mb-3 flex flex-wrap justify-center space-x-1">
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setIsDialogOpen(true)}
-          className="flex items-center space-x-1"
+          className="flex items-center space-x-1 border hover:bg-blue-200"
           disabled={isLoadingDelete}
+          title={"delete"}
         >
           <Trash2 className="h-4 w-4" />
-          <span>Delete</span>
+          {/* <span>Delete</span> */}
         </Button>
         <Button
           variant="ghost"
           size="sm"
           onClick={handleNavigateToPrint}
-          className="flex items-center space-x-1"
+          className="flex items-center border p-2 hover:bg-blue-200"
+          title={"print or download"}
         >
           <Printer className="h-4 w-4" />
           <span>Print / Download</span>
@@ -85,10 +87,11 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
           variant="ghost"
           size="sm"
           onClick={() => router.push(`/editor?resumeId=${resume.id}`)}
-          className="flex items-center space-x-1"
+          className="flex items-center space-x-1 border p-2 hover:bg-blue-200"
+          title={"edit"}
         >
           <Edit3 className="h-4 w-4" />
-          <span>Edit</span>
+          {/* <span>Edit</span> */}
         </Button>
       </div>
 

@@ -17,11 +17,40 @@ interface ResumeEditorProps {
   resumeToEdit: ResumeServerData | null;
 }
 
+const defaultResumeValues: ResumeValues = {
+  id: "",
+  templateNo: 0,
+  title: undefined,
+  description: undefined,
+  photo: undefined,
+  firstName: undefined,
+  lastName: undefined,
+  middleName: undefined,
+  jobTitle: undefined,
+  city: undefined,
+  country: undefined,
+  phone: undefined,
+  email: undefined,
+  workExperiences: [],
+  educations: [],
+  references: [],
+  skills: [],
+  languages: [],
+  borderStyle: "squircle",
+  colorHex: "#000000",
+  summary: undefined,
+  request_order_id: undefined,
+  paid_order_id: undefined,
+  isDownloaded: false,
+  Payment_status: false,
+  enable_edit: false,
+};
+
 export default function ResumeEditor({ resumeToEdit }: ResumeEditorProps) {
   const searchParams = useSearchParams();
 
   const [resumeData, setResumeData] = useState<ResumeValues>(
-    resumeToEdit ? mapToResumeValues(resumeToEdit) : {},
+    resumeToEdit ? mapToResumeValues(resumeToEdit) : defaultResumeValues,
   );
 
   const [showSmResumePreview, setShowSmResumePreview] = useState(false);

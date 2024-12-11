@@ -62,6 +62,9 @@ export default function DisplayTemplate({
               <DisplayTemplateSelector
                 resumeData={resumeData}
                 template={template}
+                isDownloaded={false}
+                Payment_status={false}
+                enable_edit={false}
               />
             </div>
           </div>

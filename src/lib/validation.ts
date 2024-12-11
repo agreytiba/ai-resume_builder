@@ -32,11 +32,6 @@ export const personalInfoSchema = z.object({
   country: optionalString,
   phone: optionalString,
   email: optionalString,
-  request_order_id: optionalString,
-  paid_order_id: optionalString,
-  isDownloaded: z.boolean(),
-  Payment_status: z.boolean(),
-  enable_edit: z.boolean(),
 });
 
 export type PersonalInfoValues = z.infer<typeof personalInfoSchema>;
@@ -128,6 +123,11 @@ export const resumeSchema = z.object({
   ...summarySchema.shape,
   colorHex: optionalString,
   borderStyle: optionalString,
+  request_order_id: optionalString,
+  paid_order_id: optionalString,
+  isDownloaded: z.boolean().default(false),
+  Payment_status: z.boolean().optional().default(false),
+  enable_edit: z.boolean().default(false),
 });
 
 export type ResumeValues = Omit<z.infer<typeof resumeSchema>, "photo"> & {
