@@ -27,3 +27,14 @@ export async function fetchResume(id: string) {
     throw new Error("Failed to fetch resume");
   }
 }
+
+
+export async function fetchPaymentStatus(resumeId: string) {
+  const resume = await prisma.resume.findUnique({
+    where: { id: resumeId },
+    select: { Payment_status: true }, // Only fetch payment_status
+  });
+
+  return resume?.Payment_status || false; // Return false if not found
+}
+

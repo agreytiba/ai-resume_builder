@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import ResumePreview from "@/components/ResumePreview";
 import { mapToResumeValues } from "@/lib/utils";
-import { fetchResume } from "./actions"; // Import the fetch function
+import { fetchResume, fetchPaymentStatus } from "./actions"; // Import both fetch functions
 import { ResumeServerData } from "@/lib/types";
 import ContentLoader from "@/components/ContentLoader";
 
@@ -13,8 +13,8 @@ export default function PrintPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const contentRef = useRef<HTMLDivElement>(null);
-  const [resume, setResume] = useState<ResumeServerData | null>(null); // Use the defined type
-  const [isReadyToPrint, setIsReadyToPrint] = useState(false); // Track printing readiness
+  const [resume, setResume] = useState<ResumeServerData | null>(null);
+  const [isReadyToPrint, setIsReadyToPrint] = useState(false);
 
   const resumeId = searchParams.get("resumeId");
   if (!resumeId) {
@@ -22,12 +22,21 @@ export default function PrintPage() {
   }
 
   useEffect(() => {
-    const loadResume = async () => {
+    const checkPaymentAndLoadResume = async () => {
       if (resumeId) {
         try {
+          // Check payment status
+          const paymentStatus = await fetchPaymentStatus(resumeId);
+
+          if (!paymentStatus) {
+            router.push("/pay"); // Redirect to payment route
+            return;
+          }
+
+          // Load resume data if payment status is true
           const fetchedResume = await fetchResume(resumeId);
           setResume(fetchedResume);
-          setIsReadyToPrint(true); // Mark as ready to print after data is fetched
+          setIsReadyToPrint(true);
         } catch (error) {
           console.error(error);
           // router.push("error"); // Navigate to an error page or handle gracefully
@@ -35,22 +44,22 @@ export default function PrintPage() {
       }
     };
 
-    loadResume();
-  }, [resumeId]);
+    checkPaymentAndLoadResume();
+  }, [resumeId, router]);
 
   const reactToPrintFn = useReactToPrint({
     contentRef,
-    documentTitle: resume?.title || "Resume", // Safely access 'title'
+    documentTitle: resume?.title || "Resume",
   });
 
   useEffect(() => {
     if (isReadyToPrint) {
       const timeout = setTimeout(() => {
-        reactToPrintFn(); // Trigger print after delay
+        reactToPrintFn();
         setIsReadyToPrint(false);
-      }, 300); // Adjust delay as needed
+      }, 300);
 
-      return () => clearTimeout(timeout); // Cleanup timeout
+      return () => clearTimeout(timeout);
     }
   }, [isReadyToPrint, reactToPrintFn]);
 

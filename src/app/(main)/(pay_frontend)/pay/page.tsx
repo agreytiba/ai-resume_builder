@@ -5,14 +5,22 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs"; // Import Clerk hook
+import { useToast } from "@/hooks/use-toast";
+import { updateRequestOrderId } from "./actions";
+
+interface UpdateResponse {
+  success: boolean;
+  message: string;
+}
 
 export default function Home() {
+  const { toast } = useToast();
   const { user } = useUser(); // Get authenticated user details
   const [formData, setFormData] = useState({
     customerName: "",
     customerEmail: "",
     customerPhoneNumber: "",
-    amountToCharge: "1000",
+    amountToCharge: "200",
   });
   const [feedback, setFeedback] = useState<{
     success: boolean;
@@ -26,6 +34,7 @@ export default function Home() {
   const saveOrderIdToLocalStorage = (orderId: string) => {
     localStorage.setItem("orderId", orderId);
   };
+  // Get resumeId to local storage
 
   // Pre-fill `customerName` and `customerEmail` from Clerk's auth
   useEffect(() => {
@@ -49,6 +58,28 @@ export default function Home() {
     });
   };
 
+  // update the request_order_id
+  const updateOrder = async (id: string, orderId: string): Promise<boolean> => {
+    try {
+      const request_order_id = orderId;
+      const { success, message }: UpdateResponse = await updateRequestOrderId({
+        id,
+        request_order_id,
+      });
+
+      if (success as boolean) {
+        toast({ title: "Update successful" });
+        return true;
+      } else {
+        toast({ title: `Update failed: ${message}` });
+        return false;
+      }
+    } catch (error) {
+      toast({ title: `Failed: ${error}` });
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setLoading(true);
@@ -63,16 +94,27 @@ export default function Home() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
-      if (data.success) {
+      const id = localStorage.getItem("resumeId");
+      if (data.success && id) {
         const currentOrderId = data.message.order_id;
-        setFeedback({ success: true, message: "Order created successfully!" });
 
-        saveOrderIdToLocalStorage(currentOrderId); // Save to local storage
+        const isUpdated = await updateOrder(id, currentOrderId);
 
-        const encodedId = encodeURIComponent(currentOrderId);
+        if (isUpdated) {
+          setFeedback({
+            success: true,
+            message: "Order created successfully!",
+          });
+          saveOrderIdToLocalStorage(currentOrderId); // Save to local storage
 
-        router.push(`/check-order?orderId=${encodedId}`);
+          const encodedId = encodeURIComponent(currentOrderId);
+          router.push(`/check-order?orderId=${encodedId}`);
+        } else {
+          setFeedback({
+            success: false,
+            message: "Failed to update request order ID.",
+          });
+        }
       } else {
         setFeedback({
           success: false,
@@ -96,6 +138,7 @@ export default function Home() {
         <h1 className="text-uppercase mb-6 text-center text-3xl font-bold text-yellow-600">
           PAYMENT FORM
         </h1>
+        <p>To Download your CV,Please Enter your phone number for payment</p>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="text-center">
             {/* <label className="block border-none text-sm font-medium text-gray-600">
@@ -111,14 +154,15 @@ export default function Home() {
               required
               disabled
             /> */}
-            <p> Amount you will be charged</p>
-            <p className="tex-center text-bold text-xl text-black">
-              {formData.amountToCharge}Tsh
-            </p>
+            <div className="rounded bg-gray-200 py-2 text-center">
+              <p className="tex-center text-bold text-xl text-black">
+                {formData.amountToCharge}Tsh
+              </p>
+            </div>
           </div>
           <div>
             <label className="my-2 block text-sm font-medium text-gray-600">
-              Enter your phone number which will be used for payment.
+              Enter your phone number
             </label>
             <input
               type="tel"
@@ -128,6 +172,7 @@ export default function Home() {
               placeholder="e.g., 0700-000-000"
               className="mt-2 w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               required
+              autoFocus
             />
           </div>
 

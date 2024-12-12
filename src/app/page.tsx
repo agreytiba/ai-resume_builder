@@ -7,16 +7,16 @@ import resumePreview from "@/assets/sample.jpg";
 import logo from "@/assets/LOGO.jpg";
 import CvTemplate from "@/assets/steps.jpg";
   import { useRouter } from "next/navigation";
-  import { useAuth } from "@clerk/nextjs";
+  import { useUser } from "@clerk/nextjs";
   export default function Page() {
-    const { isSignedIn } = useAuth();
+    const { user } = useUser();
     const router = useRouter();
 
     useEffect(() => {
-      if (isSignedIn) {
+      if (user) {
         router.push("/resumes");
       }
-    }, [isSignedIn, router]);
+    }, [user, router]);
     useEffect(() => {
       // Smooth scroll animations on mount
       window.scrollTo({ top: 0, behavior: "smooth" });

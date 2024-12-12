@@ -32,11 +32,24 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleNavigateToPrint = () => {
-    // Navigate to the print page with resume data
-    router.push(`print?resumeId=${resume.id}`);
+  // Save resemuId to local storage
+  const saveResumeIdToLocalStorage = (resumeId: string) => {
+    localStorage.setItem("resumeId", resumeId);
   };
 
+  // handle on click print/ download
+  const handleNavigateToPrint = () => {
+    // Navigate to the print page with resume data
+    // router.push(`print?resumeId=${resume.id}`);
+    if (resume.id) {
+      saveResumeIdToLocalStorage(resume.id);
+      router.push(`/print?resumeId=${resume.id}`);
+    } else {
+      // add toast hey to show file
+    }
+  };
+
+  // handle delete Resume
   const handleDelete = async () => {
     setIsLoadingDelete(true);
     try {

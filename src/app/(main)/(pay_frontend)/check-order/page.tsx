@@ -4,6 +4,7 @@
 import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { updatePaidOrderId } from "./actions";
 
 export default function Page() {
   const [orderStatus, setOrderStatus] = useState<boolean>(false);
@@ -23,6 +24,15 @@ export default function Page() {
   // Decode the URL parameter
   const decodedId = orderId ? decodeURIComponent(orderId) : null;
 
+  // update the paid_order_id
+  const updatePaidOrder = async (id: string, paid_order_id: string) => {
+    try {
+      await updatePaidOrderId(id, paid_order_id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
     let timeoutId: NodeJS.Timeout | null = null;
@@ -37,7 +47,7 @@ export default function Page() {
       try {
         const res = await fetch(`/api/check-order?orderId=${decodedId}`);
         const data = await res.json();
-        console.log("Check order:", data);
+        // console.log("Check order:", data);
 
         if (data.success && data.message.payment_status === "PENDING") {
           setOrderResponse("Check your phone for payment verification.");
@@ -52,6 +62,11 @@ export default function Page() {
           setLoading(false);
           clearInterval(intervalId!);
           clearTimeout(timeoutId!);
+          const id = localStorage.getItem("resumeId");
+          if (id) {
+            const paid_order_id = data.message.order_id;
+            updatePaidOrder(id, paid_order_id);
+          }
           router.push(`/order-summary?orderId=${decodedId}`);
         } else {
           setOrderResponse(data.message || "No order found.");
@@ -76,7 +91,7 @@ export default function Page() {
       clearInterval(intervalId!);
       setOrderResponse("Order status check timed out. Please try again later.");
       setLoading(false);
-    }, 40000);
+    }, 30000);
 
     // Clear interval and timeout when component unmounts
     return () => {

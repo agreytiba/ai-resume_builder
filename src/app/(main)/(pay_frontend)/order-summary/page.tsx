@@ -1,8 +1,10 @@
 /** @format */
 "use client";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { updatePaymentStatus } from "./actions";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -10,26 +12,41 @@ export default function Page() {
   const [isValid, setIsValid] = useState(false);
   const orderId = searchParams.get("orderId");
 
-  useEffect(() => {
-    // const savedOrderId = localStorage.getItem("orderId");
+  //  initilize router
+  const router = useRouter();
 
-    if (orderId) {
-      // if (orderId) {
-      setIsValid(true);
-      setMessage("Payment Successful");
-      localStorage.removeItem("orderId"); // Remove saved orderId
-      // } else {
-      //   setIsValid(false);
-      //   setMessage("Invalid Payment");
-      // }
+  // update the Payment_status of database
+  const updateStatus = async (id: string) => {
+    try {
+      await updatePaymentStatus(id);
+      return true;
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const id = localStorage.getItem("resumeId");
+
+    if (orderId && id) {
+      updateStatus(id).then((isSuccess) => {
+        if (isSuccess) {
+          setIsValid(true);
+          setMessage("Payment Successful");
+          localStorage.removeItem("orderId");
+          router.push(`/print?resumeId=${id}`);
+        } else {
+          setIsValid(false);
+          setMessage("Invalid Payment");
+        }
+      });
     } else {
       setIsValid(false);
       setMessage("Invalid Payment");
     }
-  }, [orderId]);
+  }, [orderId, router]);
 
-  console.log(isValid);
-  console.log(message);
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">

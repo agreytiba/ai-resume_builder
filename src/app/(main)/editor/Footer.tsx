@@ -23,17 +23,29 @@ export default function Footer({
   resumeData,
 }: FooterProps) {
   const router = useRouter();
-  console.log(resumeData);
+
+  // onclik the prev button
   const previousStep = steps.find(
     (_, index) => steps[index + 1]?.key === currentStep,
   )?.key;
 
+  //  onclick the next button
   const nextStep = steps.find(
     (_, index) => steps[index - 1]?.key === currentStep,
   )?.key;
-
+  // Save resemuId to local storage
+  const saveResumeIdToLocalStorage = (resumeId: string) => {
+    localStorage.setItem("resumeId", resumeId);
+  };
+  // handle download cv
   const handleDownload = () => {
-    router.push(`/print?resumeId=${resumeData.id}`); // Use string path with encoded query
+    if (resumeData.id) {
+      saveResumeIdToLocalStorage(resumeData.id);
+      router.push(`/print?resumeId=${resumeData.id}`);
+    } else {
+      // add toast hey to show file
+    }
+    // Use string path with encoded query
   };
 
   return (
