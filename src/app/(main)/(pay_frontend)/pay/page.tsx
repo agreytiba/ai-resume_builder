@@ -20,7 +20,7 @@ export default function Home() {
     customerName: "",
     customerEmail: "",
     customerPhoneNumber: "",
-    amountToCharge: "200",
+    amountToCharge: "1000",
   });
   const [feedback, setFeedback] = useState<{
     success: boolean;

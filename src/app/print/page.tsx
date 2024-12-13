@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import ResumePreview from "@/components/ResumePreview";
 import { mapToResumeValues } from "@/lib/utils";
-import { fetchResume, fetchPaymentStatus } from "./actions"; // Import both fetch functions
+import { fetchResume, fetchPaymentStatus } from "./actions";
 import { ResumeServerData } from "@/lib/types";
 import ContentLoader from "@/components/ContentLoader";
 
@@ -25,21 +25,18 @@ export default function PrintPage() {
     const checkPaymentAndLoadResume = async () => {
       if (resumeId) {
         try {
-          // Check payment status
           const paymentStatus = await fetchPaymentStatus(resumeId);
 
           if (!paymentStatus) {
-            router.push("/pay"); // Redirect to payment route
+            router.push("/pay");
             return;
           }
 
-          // Load resume data if payment status is true
           const fetchedResume = await fetchResume(resumeId);
           setResume(fetchedResume);
           setIsReadyToPrint(true);
         } catch (error) {
           console.error(error);
-          // router.push("error"); // Navigate to an error page or handle gracefully
         }
       }
     };
@@ -69,11 +66,28 @@ export default function PrintPage() {
 
   return (
     <div>
+      <style jsx global>{`
+        @media print {
+          body {
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+          }
+          @page {
+            margin: 10mm;
+            size: A4; /* or 'auto' for automatic size adjustment */
+          }
+          .resume-preview {
+            page-break-inside: avoid;
+            overflow: visible !important;
+          }
+        }
+      `}</style>
       <div className="p-4">
         <ResumePreview
           resumeData={mapToResumeValues(resume)}
           contentRef={contentRef}
-          className="overflow-hidden shadow-sm transition-shadow"
+          className="resume-preview"
         />
       </div>
     </div>

@@ -94,7 +94,7 @@ export default function ResumeItem({ resume }: ResumeItemProps) {
           title={"print or download"}
         >
           <Printer className="h-4 w-4" />
-          <span>Print / Download</span>
+          <span> Download</span>
         </Button>
         <Button
           variant="ghost"
