@@ -335,7 +335,7 @@ export function EducationSection({
               {edu.startDate && (
                 <span>
                   {edu.startDate &&
-                    `${formatDate(edu.startDate, "MM/yyyy")} ${edu.endDate ? `- ${formatDate(edu.endDate, "MM/yyyy")}` : ""}`}
+                    `${formatDate(edu.startDate, "yyyy")} ${edu.endDate ? `- ${formatDate(edu.endDate, "yyyy")}` : ""}`}
                 </span>
               )}
             </div>
