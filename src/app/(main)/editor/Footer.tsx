@@ -86,11 +86,9 @@ export default function Footer({
           )}
         </Button>
         <div className="flex items-center gap-3">
-          {currentStep === "reference" && (
-            <Button className="bg-black" onClick={handleDownload}>
-              Download
-            </Button>
-          )}
+          <Button className="bg-black" onClick={handleDownload}>
+            Download
+          </Button>
 
           <div
             className={cn(
